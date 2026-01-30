@@ -3,2063 +3,1245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>座位排布系统</title>
+    <title>🎊 喜庆抽奖系统V2.4-智能自适应版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* --- CSS 变量与主题定义 --- */
+        :root {
+            /* 默认：喜庆红 */
+            --bg-gradient: linear-gradient(135deg, #c31432 0%, #dc2430 50%, #f37335 100%);
+            --sidebar-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            --panel-bg: rgba(139, 0, 0, 0.4);
+            --text-primary: #ffd700;       /* 金色标题 */
+            --text-secondary: #ffecb3;     /* 浅金副标题 */
+            --accent-color: #ffd700;       /* 强调色/边框 */
+            --btn-bg: linear-gradient(to right, #eab308, #ca8a04);
+            --shadow-color: rgba(255, 215, 0, 0.5);
+            --glass-border: rgba(255, 215, 0, 0.3);
+            --font-family: 'Microsoft YaHei', sans-serif;
+            --danmaku-bg: rgba(255, 215, 0, 0.2);
+            --danmaku-border: rgba(255, 215, 0, 0.4);
         }
 
+        /* 主题：科技蓝 */
+        body.theme-tech {
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --sidebar-bg: rgba(10, 25, 47, 0.95);
+            --panel-bg: rgba(0, 255, 255, 0.1);
+            --text-primary: #00f2ff;
+            --text-secondary: #a5f3fc;
+            --accent-color: #00f2ff;
+            --btn-bg: linear-gradient(to right, #06b6d4, #0891b2);
+            --shadow-color: rgba(0, 242, 255, 0.6);
+            --glass-border: rgba(0, 242, 255, 0.3);
+            --font-family: 'Segoe UI', 'Roboto', sans-serif;
+            --danmaku-bg: rgba(0, 242, 255, 0.15);
+            --danmaku-border: rgba(0, 242, 255, 0.3);
+        }
+
+        /* 主题：简约白 */
+        body.theme-white {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --sidebar-bg: rgba(255, 255, 255, 0.95);
+            --panel-bg: rgba(255, 255, 255, 0.6);
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --accent-color: #4a90e2;
+            --btn-bg: linear-gradient(to right, #4a90e2, #357abd);
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --font-family: 'Helvetica Neue', sans-serif;
+            --danmaku-bg: rgba(74, 144, 226, 0.1);
+            --danmaku-border: rgba(74, 144, 226, 0.3);
+        }
+
+        /* 主题：暗黑金 */
+        body.theme-dark {
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            --sidebar-bg: #111111;
+            --panel-bg: rgba(30, 30, 30, 0.8);
+            --text-primary: #d4af37;
+            --text-secondary: #c0c0c0;
+            --accent-color: #d4af37;
+            --btn-bg: linear-gradient(to right, #d4af37, #aa8c2c);
+            --shadow-color: rgba(212, 175, 55, 0.4);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --font-family: 'Times New Roman', serif;
+            --danmaku-bg: rgba(212, 175, 55, 0.15);
+            --danmaku-border: rgba(212, 175, 55, 0.3);
+        }
+
+        /* 主题：浪漫粉 */
+        body.theme-pink {
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --sidebar-bg: rgba(255, 255, 255, 0.8);
+            --panel-bg: rgba(255, 255, 255, 0.5);
+            --text-primary: #ff6b6b;
+            --text-secondary: #ff8e8e;
+            --accent-color: #ff6b6b;
+            --btn-bg: linear-gradient(to right, #ff758c, #ff7eb3);
+            --shadow-color: rgba(255, 107, 107, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --font-family: 'Microsoft YaHei', sans-serif;
+            --danmaku-bg: rgba(255, 107, 107, 0.1);
+            --danmaku-border: rgba(255, 107, 107, 0.3);
+        }
+
+        /* --- 基础样式重置 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
+            font-family: var(--font-family);
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            overflow: hidden;
+            transition: background 0.5s ease;
         }
 
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        /* 动态类：应用CSS变量 */
+        .text-theme-primary { color: var(--text-primary) !important; text-shadow: 0 2px 4px var(--shadow-color); }
+        .text-theme-secondary { color: var(--text-secondary) !important; }
+        .bg-theme-sidebar { background: var(--sidebar-bg) !important; }
+        .border-theme { border-color: var(--accent-color) !important; }
+        .shadow-theme { text-shadow: 0 0 10px var(--shadow-color); }
+        
+        /* 侧边栏过渡 */
+        .sidebar-transition {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+        }
+        
+        .sidebar-left.hidden-sidebar { transform: translateX(-100%); }
+        .sidebar-right.hidden-sidebar { transform: translateX(100%); }
+        .stats-panel.hidden-stats { transform: translateY(100%); }
+
+        /* 滚动动画 */
+        @keyframes roll {
+            0%, 100% { transform: translateY(-5px); }
+            50% { transform: translateY(5px); }
+        }
+        .rolling { animation: roll 0.1s infinite; }
+
+        /* 中奖卡片 */
+        @keyframes winnerPop {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .winner-card {
+            animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
+        /* 光荣榜 */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid var(--accent-color);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.3);
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
+        /* 折叠内容 */
+        .round-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
         }
+        .round-content.expanded { grid-template-rows: 1fr; }
+        .round-inner { overflow: hidden; }
+        .collapse-icon { transition: transform 0.3s ease; }
+        .collapse-icon.collapsed { transform: rotate(-90deg); }
 
-        .controls {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+        /* 烟花与金币 */
+        @keyframes firework {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
-
-        .control-group {
-            display: inline-block;
-            margin-right: 20px;
-            margin-bottom: 10px;
-        }
-
-        .control-group button {
-            padding: 8px 16px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .control-group button:hover {
-            background: #0056b3;
-            transform: translateY(-1px);
-        }
-
-        .save-btn {
-            background: #17a2b8 !important;
-        }
-
-        .save-btn:hover {
-            background: #138496 !important;
-        }
-
-        .export-btn {
-            background: #6f42c1 !important;
-        }
-
-        .export-btn:hover {
-            background: #5a32a3 !important;
-        }
-
-        .import-btn {
-            background: #fd7e14 !important;
-        }
-
-        .import-btn:hover {
-            background: #e8590c !important;
-        }
-
-        .main-content {
-            display: flex;
-            gap: 20px;
-        }
-
-        .left-panel {
-            width: 250px;
-            flex-shrink: 0;
-        }
-
-        .panel-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 16px;
-        }
-
-        .person-list {
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            padding: 10px;
-            min-height: 400px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .person-item {
-            color: black;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            cursor: move;
-            user-select: none;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .person-item:hover {
-            transform: translateX(5px);
-            filter: brightness(0.9);
-        }
-
-        .person-item.dragging {
-            opacity: 0.5;
-        }
-
-        /* 新增：删除按钮样式 */
-        .person-item .delete-btn {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 20px;
-            height: 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
+        .firework {
+            position: fixed;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            transition: all 0.2s;
-            z-index: 10;
+            animation: firework 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 9999;
         }
 
-        .person-item:hover .delete-btn {
-            display: flex;
+        @keyframes coinFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
+        }
+        .coin {
+            position: fixed;
+            top: -50px;
+            font-size: 6rem; /* ← 这里改大一点，比如改成 3rem 或 4rem */
+            animation: coinFall linear forwards;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .person-item .delete-btn:hover {
-            background: #c82333;
-            transform: scale(1.1);
+        /* 按钮与输入框 */
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 var(--shadow-color); }
+            50% { box-shadow: 0 0 0 15px rgba(0,0,0,0); }
+        }
+        .btn-pulse { animation: pulse 2s infinite; }
+
+        input[type="text"], input[type="number"], select {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid var(--accent-color) !important;
+            color: var(--text-primary) !important;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--shadow-color) !important;
+            background: rgba(255, 255, 255, 0.2) !important;
         }
 
-        .person-name {
+        /* 必填标记 */
+        .required-field::after {
+            content: '*';
+            color: #ff4444;
+            margin-left: 4px;
             font-weight: bold;
-            font-size: 14px;
         }
 
-        .person-dept {
-            font-size: 11px;
-            opacity: 0.9;
-            margin-top: 2px;
-        }
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
 
-        .right-panel {
-            flex: 1;
-            overflow-x: auto;
-        }
-
-        .fullscreen-btn {
-            background: #28a745 !important;
-            margin-bottom: 10px;
-        }
-
-        .fullscreen-btn:hover {
-            background: #218838 !important;
-        }
-
-        .stage {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* 主按钮 */
+        .btn-main {
+            background: var(--btn-bg);
             color: white;
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 35px;
-            border-radius: 8px;
-            font-size: 24px;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
         }
-
-        .seating-area {
-            display: inline-block;
-            min-width: 100%;
+        .btn-main:hover { transform: scale(1.05); filter: brightness(1.1); }
+        
+        .theme-btn {
+            width: 1.8rem; height: 1.8rem; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
+        .theme-btn.active { transform: scale(1.2); border-color: var(--text-primary); }
 
-        .seat-row {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 15px;
-            gap: 6px;
-            align-items: center;
-        }
-
-        .seat-cell {
+        /* 统计面板 */
+        .stats-panel {
+            background: var(--sidebar-bg);
+            border-top: 2px solid var(--accent-color);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
 
-        .seat {
-            width: 85px;
-            height: 55px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
+        /* 浮动按钮 */
+        .float-btn {
+            position: fixed;
+            z-index: 100;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 人员标签样式 */
+        .person-tag {
+            display: inline-flex;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            margin: 0.2rem;
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .person-tag:hover {
+            transform: scale(1.05);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .pool-container {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.5rem;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #333;
-            padding: 5px 6px;
-            position: relative;
         }
 
-        .seat:hover {
-            border-color: #007bff;
-            transform: scale(1.03);
-            box-shadow: 0 2px 8px rgba(0,123,255,0.2);
-        }
-
-        .seat.occupied {
-            color: black;
-            cursor: move;
-        }
-
-        .seat.occupied.dragging {
-            opacity: 0.5;
-            transform: scale(0.95);
-        }
-
-        .seat.drag-over {
-            background: #e3f2fd;
-            border-color: #2196F3;
-            border-style: dashed;
-            border-width: 3px;
-        }
-
-        .seat.swap-target {
-            border-color: #FF9800;
-            border-style: dashed;
-            border-width: 3px;
-            animation: pulse 0.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .seat.disabled {
-            background: repeating-linear-gradient(
-                45deg,
-                #e0e0e0,
-                #e0e0e0 10px,
-                #f0f0f0 10px,
-                #f0f0f0 20px
-            );
-            border-color: #ccc;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        .seat.disabled:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: #ccc;
-        }
-
-        .seat-name {
-            font-weight: bold;
-            font-size: 13px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            max-width: 100%;
-        }
-
-        .seat-dept {
-            font-size: 11px;
-            opacity: 0.85;
-            margin-top: 2px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            max-width: 100%;
-        }
-
-        .drag-hint {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #FF9800;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: bold;
-            pointer-events: none;
-            display: none;
-        }
-
-        .seat.occupied:hover .drag-hint {
-            display: block;
-        }
-
-        .aisle-column {
-            width: 50px;
-            height: 55px;
-            background: repeating-linear-gradient(
-                45deg,
-                #e0e0e0,
-                #e0e0e0 10px,
-                #f5f5f5 10px,
-                #f5f5f5 20px
-            );
-            border: 2px dashed #999;
-            border-radius: 6px;
+        .pool-header {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .aisle-column::before {
-            content: '过道';
-        }
-
-        .row-label {
-            min-width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #666;
-            margin-right: 10px;
             flex-shrink: 0;
-            font-size: 14px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            border: 1px solid #e0e0e0;
         }
 
-        .stats {
-            margin-top: 25px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
+        .pool-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        /* 拖拽调整高度的手柄 */
+        .resize-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            cursor: ns-resize;
+            z-index: 100;
             display: flex;
-            gap: 30px;
+            align-items: center;
             justify-content: center;
+            background: transparent;
+            transition: background 0.2s;
         }
 
-        .stat-item {
-            text-align: center;
+        .resize-handle:hover {
+            background: var(--accent-color);
         }
 
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
+        .resize-handle::before {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
         }
 
-        .stat-label {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .instructions {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #856404;
-        }
-
-        .save-status {
-            display: inline-block;
-            margin-left: 10px;
-            padding: 4px 10px;
-            background: #d4edda;
-            color: #155724;
-            border-radius: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .save-status.show {
+        .resize-handle:hover::before {
             opacity: 1;
         }
 
-        .name-input-section {
-            background: #e3f2fd;
-            border: 2px solid #2196F3;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
+        .resize-handle-icon {
+            position: absolute;
+            font-size: 10px;
+            color: var(--text-primary);
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
-        .name-input-section h3 {
-            margin-bottom: 10px;
-            color: #1976d2;
-            font-size: 15px;
+        .resize-handle:hover .resize-handle-icon {
+            opacity: 1;
         }
 
-        .name-input-section .hint {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 8px;
-            background: white;
-            padding: 8px;
-            border-radius: 4px;
-            border-left: 3px solid #2196F3;
-        }
-
-        .name-input-section textarea {
-            width: 100%;
-            height: 140px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 13px;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            resize: vertical;
-        }
-
-        .name-input-section button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .name-input-section button:hover {
-            background: #1976d2;
-        }
-
-        .append-btn {
-            background: #28a745 !important;
-        }
-
-        .append-btn:hover {
-            background: #218838 !important;
-        }
-
-        .color-config-section {
-            background: #f0f8ff;
-            border: 2px solid #4CAF50;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .color-config-section h3 {
-            margin-bottom: 10px;
-            color: #2e7d32;
-            font-size: 15px;
-        }
-
-        .opacity-control {
-            background: white;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-        }
-
-        .opacity-control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .opacity-label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .opacity-value {
-            font-size: 13px;
-            font-weight: bold;
-            color: #4CAF50;
-            background: #e8f5e9;
-            padding: 2px 8px;
-            border-radius: 3px;
-        }
-
-        .opacity-slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: linear-gradient(to right, #fff 0%, #4CAF50 100%);
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-
-        .opacity-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #4CAF50;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .opacity-slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #4CAF50;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            border: none;
-        }
-
-        .opacity-presets {
-            display: flex;
-            gap: 5px;
-            margin-top: 8px;
-        }
-
-        .opacity-preset-btn {
-            flex: 1;
-            padding: 4px 8px;
-            font-size: 11px;
-            background: #e0e0e0;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .opacity-preset-btn:hover {
-            background: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
-        }
-
-        .dept-color-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .dept-color-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px;
-            margin-bottom: 8px;
-            background: white;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .dept-color-item label {
-            flex: 1;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .dept-color-item input[type="color"] {
-            width: 50px;
-            height: 35px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .dept-color-preview {
-            width: 80px;
-            height: 35px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .fullscreen-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: white;
-            z-index: 9999;
-            overflow: auto;
-            padding: 30px;
-        }
-
-        .fullscreen-overlay.active {
-            display: block;
-        }
-
-        .fullscreen-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .fullscreen-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .fullscreen-hint {
-            font-size: 14px;
-            color: #666;
-            margin-left: 20px;
-            background: #fff3cd;
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: 1px solid #ffc107;
-        }
-
-        .close-fullscreen-btn {
-            padding: 12px 24px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .close-fullscreen-btn:hover {
-            background: #c82333;
-        }
-
-        .fullscreen-seating {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .fullscreen-overlay .stage {
-            font-size: 28px;
-            padding: 25px;
-            margin-bottom: 40px;
-        }
-
-        .fullscreen-overlay .seat-row {
-            margin-bottom: 18px;
-        }
-
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            margin-top: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .legend-color {
-            width: 30px;
-            height: 20px;
-            border-radius: 3px;
-        }
-
-        .legend-label {
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        /* 新增：请假人员区域样式 */
-        .leave-section {
-            margin-top: 25px;
-        }
-
-        .leave-section .panel-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 16px;
-        }
-
-        .leave-list {
-            background: #fdf2f8;
-            border: 2px dashed #e53e3e;
-            border-radius: 6px;
-            padding: 10px;
-            min-height: 100px;
-            max-height: 200px;
-            overflow-y: auto;
-            transition: all 0.2s;
-        }
-
-        .leave-list.drag-over {
-            background: #fee5e5;
-            border-color: #dc2626;
-            border-width: 3px;
-        }
-
-        .leave-item {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 85px;
-            height: 55px;
-            color: black;
-            padding: 5px 6px;
-            margin: 6px;
-            border-radius: 4px;
-            cursor: move;
+        /* 拖拽时的视觉反馈 */
+        .resizing {
             user-select: none;
-            transition: all 0.2s;
-            background: rgba(239, 68, 68, 0.1);
-            border-left: 4px solid #ef4444;
-            vertical-align: top;
-            box-sizing: border-box;
         }
 
-        .leave-item:hover {
-            transform: scale(1.03);
-            filter: brightness(0.9);
+        .resizing .stats-panel {
+            transition: none !important;
         }
 
-        .leave-item.dragging {
-            opacity: 0.5;
-        }
-
-        .leave-item .person-name {
+        /* 赞助官标签样式 - 放大版本 */
+        .sponsor-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            font-size: 13px;
-            text-overflow: ellipsis;
+            margin-top: 0.75rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+            animation: sponsorGlow 2s ease-in-out infinite;
+            letter-spacing: 1px;
+        }
+
+        @keyframes sponsorGlow {
+            0%, 100% { 
+                box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 6px 24px rgba(102, 126, 234, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        /* 文本截断 */
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            white-space: nowrap;
-            max-width: 100%;
         }
-
-        .leave-item .person-dept {
-            font-size: 11px;
-            opacity: 0.85;
-            margin-top: 2px;
-            text-overflow: ellipsis;
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            white-space: nowrap;
-            max-width: 100%;
-        }
-
-        /* 全屏模式下的请假区域 */
-        .fullscreen-leave {
-            width: 100%;
-            max-width: 800px;
-            margin: 30px auto 20px;
-        }
-
-        .fullscreen-leave .leave-list {
-            min-height: 150px;
-            max-height: 300px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-
-            .left-panel {
-                width: 100%;
-            }
-
-            .person-list {
-                max-height: 250px;
-            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>座位排布系统</h1>
-        </div>
+<body class="h-screen flex flex-col">
 
-        <div class="instructions">
-            💡 <strong>使用提示：</strong>
-            1️⃣ 从左侧拖拽人员到座位分配 | 
-            2️⃣ 点击已分配座位移除人员 | 
-            3️⃣ 拖拽已占用座位可以互换位置 | 
-            4️⃣ 在颜色配置中自定义部门颜色 |
-            5️⃣ 全屏模式下也可以拖拽互换 |
-            6️⃣ 点击"保存布局"自动保存，下次打开自动恢复|
-            7️⃣ 拖拽人员/已分配座位到请假区域标记请假 |
-            8️⃣ 点击请假人员可移除请假状态 |
-            9️⃣ 鼠标悬停人员名单显示删除按钮 |
-        </div>
-
-        <div class="controls">
-            <div class="control-group">
-                <button class="fullscreen-btn" onclick="openFullscreen()">📺 全屏查看座位图</button>
-            </div>
-            <div class="control-group">
-                <button class="save-btn" onclick="saveLayout()">💾 保存布局</button>
-                <span class="save-status" id="saveStatus">✓ 已保存</span>
-            </div>
-            <div class="control-group">
-                <button class="export-btn" onclick="exportLayout()">📤 导出布局文件</button>
-            </div>
-            <div class="control-group">
-                <button class="import-btn" onclick="document.getElementById('fileInput').click()">📥 导入布局文件</button>
-                <input type="file" id="fileInput" accept=".json" onchange="importLayout(event)">
-            </div>
-            <div class="control-group">
-                <button onclick="clearAll()" style="background: #dc3545;">🗑️ 清空所有座位</button>
-            </div>
-            <div class="control-group">
-                <button onclick="autoAssign()" style="background: #28a745;">🎲 自动分配</button>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="left-panel">
-                <div class="panel-title">👥 人员名单 (共<span id="peopleCount">232</span>人)</div>
-                <div class="person-list" id="personList"></div>
-
-                <div class="name-input-section">
-                    <h3>📝 批量导入名单</h3>
-                    <div class="hint">
-                        💡 格式说明：每行一个人员<br>
-                        • 带部门：<strong>部门-姓名</strong>（如：战略与运营管理部-旋总）<br>
-                        • 无部门：直接输入姓名<br>
-                        • <strong style="color: #28a745;">追加人员：在现有名单基础上新增</strong><br>
-                        • <strong style="color: #dc3545;">导入名单：清空原有后重新导入</strong>
-                    </div>
-                    <textarea id="nameInput" placeholder="请输入姓名，每行一个，例如：&#10;战略与运营管理部-旋总&#10;战略与运营管理部-小袁"></textarea>
-                    <button onclick="appendNames()" class="append-btn">➕ 追加人员</button>
-                    <button onclick="importNames()">🔄 导入名单（覆盖）</button>
-                    <button onclick="useDefaultNames()" style="background: #607d8b; margin-left: 8px;">使用默认编号(1-232)</button>
+    <!-- 主体布局 -->
+    <div class="flex-1 flex overflow-hidden relative">
+        <!-- 左侧控制面板 -->
+        <div id="left-sidebar" class="sidebar-left sidebar-transition bg-theme-sidebar flex flex-col overflow-y-auto absolute left-0 top-0 h-full z-50 w-72 lg:w-80">
+            <div class="p-4 lg:p-6 space-y-4 lg:space-y-6">
+                <!-- 标题 -->
+                <div class="text-center border-b border-theme pb-3 lg:pb-4">
+                    <h2 class="text-2xl lg:text-3xl font-black text-theme-primary mb-1">🎉 控制台</h2>
+                    <div class="h-1 w-16 bg-theme mx-auto mt-2" style="background: var(--accent-color)"></div>
                 </div>
 
-                <div class="color-config-section">
-                    <h3>🎨 部门颜色配置</h3>
+                <!-- 主题切换 -->
+                <div class="space-y-2">
+                    <label class="block font-bold text-theme-secondary text-xs lg:text-sm">🎨 主题风格</label>
+                    <div class="flex gap-2 lg:gap-3 justify-center bg-black/20 p-2 lg:p-3 rounded-xl">
+                        <div class="theme-btn active" style="background: #c31432;" onclick="setTheme('default')" title="喜庆红"></div>
+                        <div class="theme-btn" style="background: #0f2027;" onclick="setTheme('theme-tech')" title="科技蓝"></div>
+                        <div class="theme-btn" style="background: #f5f7fa;" onclick="setTheme('theme-white')" title="简约白"></div>
+                        <div class="theme-btn" style="background: #000000;" onclick="setTheme('theme-dark')" title="暗黑金"></div>
+                        <div class="theme-btn" style="background: #ff9a9e;" onclick="setTheme('theme-pink')" title="浪漫粉"></div>
+                    </div>
+                </div>
+
+                <!-- 名单导入 -->
+                <div class="space-y-2 lg:space-y-3">
+                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">📋 导入名单</label>
+                    <div class="bg-black/10 border border-theme rounded-lg p-2 lg:p-3 text-xs text-theme-secondary">
+                        <p>💡 格式：部门：姓名 (每行一人)</p>
+                    </div>
+                    <label class="btn-main cursor-pointer block text-center py-2 lg:py-3 rounded-xl shadow-lg font-bold text-sm lg:text-base">
+                        <i class="fas fa-upload mr-2"></i> 选择TXT文件
+                        <input type="file" id="file-input" accept=".txt" class="hidden" onchange="loadNames(this)">
+                    </label>
+                    <div class="flex justify-between items-center px-1">
+                        <span id="file-status" class="text-gray-400 text-xs">未加载</span>
+                        <span class="text-theme-secondary text-sm">总数: <strong id="total-people" class="text-theme-primary text-lg">0</strong> 人</span>
+                    </div>
+                </div>
+
+                <div class="h-px bg-theme opacity-30" style="background: var(--accent-color)"></div>
+
+                <!-- 奖项配置 -->
+                <div class="space-y-3 lg:space-y-4">
+                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">🎁 奖品设置</label>
                     
-                    <div class="opacity-control">
-                        <div class="opacity-control-header">
-                            <span class="opacity-label">🎨 整体透明度</span>
-                            <span class="opacity-value" id="opacityValue">70%</span>
-                        </div>
-                        <input type="range" 
-                               class="opacity-slider" 
-                               id="opacitySlider" 
-                               min="10" 
-                               max="100" 
-                               value="70" 
-                               oninput="updateOpacity(this.value)">
-                        <div class="opacity-presets">
-                            <button class="opacity-preset-btn" onclick="setOpacity(30)">30%</button>
-                            <button class="opacity-preset-btn" onclick="setOpacity(50)">50%</button>
-                            <button class="opacity-preset-btn" onclick="setOpacity(70)">70%</button>
-                            <button class="opacity-preset-btn" onclick="setOpacity(90)">90%</button>
-                            <button class="opacity-preset-btn" onclick="setOpacity(100)">100%</button>
+                    <!-- 奖品名称 - 必填 -->
+                    <div class="relative">
+                        <label class="block text-theme-secondary text-xs mb-2 required-field">奖品名称</label>
+                        <input type="text" id="prize-name" placeholder="🏆 请输入奖项名称" required
+                               class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-base lg:text-lg">
+                    </div>
+                    
+                    <!-- 梦想赞助官 - 必填 -->
+                    <div class="relative">
+                        <label class="block text-theme-secondary text-xs mb-2 required-field">梦想赞助官</label>
+                        <div class="relative">
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <input type="text" id="sponsor-name" placeholder="✨ 请输入赞助官姓名" required
+                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-sm lg:text-base pl-10">
                         </div>
                     </div>
-
-                    <div class="dept-color-list" id="deptColorList">
-                        <p style="color: #999; font-size: 12px; text-align: center; padding: 20px;">导入名单后，将自动显示部门颜色配置</p>
+                    
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <label class="block text-theme-secondary text-xs mb-1">抽取人数</label>
+                            <input type="number" id="draw-count" value="1" min="1" 
+                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-lg lg:text-xl">
+                        </div>
+                        <div class="flex items-end">
+                            <label class="flex items-center bg-black/10 rounded-xl cursor-pointer hover:bg-black/20 transition border border-theme px-2 py-2 lg:px-3 lg:py-3 h-[46px] lg:h-[54px]">
+                                <input type="checkbox" id="allow-repeat" class="mr-2 accent-current w-4 h-4">
+                                <span class="text-theme-secondary font-bold text-xs lg:text-sm">可重复</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
+
+                <!-- 排除名单 -->
+                <details class="group bg-black/10 rounded-xl border border-theme">
+                    <summary class="flex justify-between items-center cursor-pointer list-none p-2 lg:p-3 text-theme-secondary font-bold text-sm">
+                        <span>🚫 排除设置</span>
+                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <div class="p-2 lg:p-3 pt-0 space-y-2">
+                         <label class="cursor-pointer bg-red-900/50 hover:bg-red-800/50 border border-red-500/50 text-red-200 text-xs py-2 rounded-lg text-center block transition-all">
+                            上传排除名单
+                            <input type="file" id="exclude-input" accept=".txt" class="hidden" onchange="loadExclude(this)">
+                        </label>
+                        <div id="exclude-status" class="text-xs text-gray-400 text-center">无排除</div>
+                        <label class="flex items-center justify-center cursor-pointer">
+                            <input type="checkbox" id="enable-exclude" class="mr-2" onchange="updatePoolDisplay();">
+                            <span class="text-xs text-theme-secondary">启用排除名单</span>
+                        </label>
+                    </div>
+                </details>
+
+                <!-- 导出按钮 -->
+                <button onclick="exportResults()" 
+                        class="w-full bg-green-600/80 hover:bg-green-600 text-white font-bold rounded-xl transition-all shadow-lg py-2 lg:py-3 mt-2 text-sm lg:text-base">
+                    <i class="fas fa-download mr-2"></i> 导出结果
+                </button>
+            </div>
+        </div>
+
+        <!-- 侧边栏收起/展开按钮 -->
+        <button id="left-close-btn" onclick="toggleLeftSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 left-[16.5rem] lg:left-[18.5rem]">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button id="show-left-btn" onclick="toggleLeftSidebar()" class="float-btn hidden top-1/2 left-2 -translate-y-1/2">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <!-- 主舞台 -->
+        <div class="flex-1 flex flex-col p-2 lg:p-4 overflow-hidden relative min-w-0">
+            <!-- 清空按钮 -->
+            <button id="btn-clear" onclick="clearScreen()" 
+                    class="hidden absolute top-4 right-4 z-40 bg-gray-600/50 hover:bg-gray-600 text-white px-3 py-1 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm backdrop-blur-sm border border-white/20 transition-all">
+                <i class="fas fa-eraser mr-1"></i> 清空
+            </button>
+
+            <!-- 标题区域 -->
+            <div class="text-center mb-2 lg:mb-6 mt-2 flex flex-col justify-center flex-shrink-0" style="min-height: 100px;">
+                <h1 id="display-prize" class="text-3xl md:text-5xl lg:text-6xl font-black text-theme-primary mb-1 drop-shadow-2xl transition-all leading-tight">
+                    🎁 准备抽奖
+                </h1>
+                <!-- 赞助官显示 - 放大版本 -->
+                <div id="display-sponsor" class="hidden">
+                    <span class="sponsor-badge">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>
+                        梦想赞助官：<span id="sponsor-text"></span>
+                    </span>
+                </div>
+                <p class="text-base md:text-xl lg:text-2xl text-theme-secondary mt-2">
+                    本轮抽取 <span id="display-count" class="font-black text-theme-primary text-xl md:text-2xl">1</span> 人
+                </p>
             </div>
 
-            <div class="right-panel">
-                <div class="stage">🎬 舞 台 🎬</div>
-                <div class="seating-area" id="seatingArea"></div>
-                
-                <!-- 新增：请假人员容器 -->
-                <div class="leave-section">
-                    <div class="panel-title">🚫 请假人员名单</div>
-                    <div class="leave-list" id="leaveList" ondrop="dropToLeave(event)" ondragover="allowDrop(event)" ondragenter="dragEnterLeave(event)" ondragleave="dragLeaveLeave(event)"></div>
+            <!-- 控制按钮区域 -->
+            <div class="flex justify-center gap-4 mb-4 lg:mb-8 z-30 flex-shrink-0">
+                <button id="btn-start" onclick="start()" 
+                        class="btn-main btn-pulse text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">
+                    <i class="fas fa-play mr-2"></i> 开始
+                </button>
+                <button id="btn-stop" onclick="stop()" 
+                        class="hidden btn-main bg-red-600 text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">
+                    <i class="fas fa-stop mr-2"></i> 停止
+                </button>
+            </div>
+
+            <!-- 滚动/结果展示区 -->
+            <div class="flex-1 flex items-center justify-center relative w-full overflow-hidden min-h-0">
+                <!-- 滚动名字 -->
+                <div id="rolling-area" class="text-center w-full px-4">
+                    <div id="rolling-name" class="font-black text-theme-primary rolling break-words" 
+                         style="font-size: clamp(2.5rem, 5vw, 6rem); line-height: 1.2;">
+                        准备就绪
+                    </div>
+                    <div id="rolling-dept" class="text-xl md:text-2xl text-theme-secondary mt-2 opacity-80"></div>
                 </div>
 
-                <div class="legend" id="legend" style="display: none;">
-                    <strong style="width: 100%; margin-bottom: 5px;">部门颜色图例：</strong>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="totalSeats">232</div>
-                        <div class="stat-label">总座位数</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="occupiedSeats">0</div>
-                        <div class="stat-label">已分配</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="availableSeats">232</div>
-                        <div class="stat-label">剩余座位</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="remainingPeople">232</div>
-                        <div class="stat-label">待分配人员</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="leaveCount">0</div>
-                        <div class="stat-label">请假人数</div>
+                <!-- 中奖结果 - 居中网格布局 -->
+                <div id="result-area" class="hidden absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                    <div id="result-grid" class="w-full h-full flex items-center justify-center">
+                        <!-- JS 动态插入卡片 -->
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 右侧锦鲤册 -->
+        <div id="right-sidebar" class="sidebar-right sidebar-transition glass-panel flex flex-col absolute right-0 top-0 h-full z-50 w-72 lg:w-80">
+            <div class="bg-black/20 text-center border-b border-theme sticky top-0 z-10 p-3 lg:p-4">
+                <h3 class="text-theme-primary text-xl lg:text-2xl font-black">
+                    <i class="fas fa-fish mr-2"></i> 锦鲤册
+                </h3>
+            </div>
+            
+            <div id="history-list" class="p-3 lg:p-4 space-y-3 overflow-y-auto flex-1">
+                <div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>
+            </div>
+        </div>
+
+        <!-- 右侧收起按钮 -->
+        <button id="right-close-btn" onclick="toggleRightSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 right-[17.5rem] lg:right-[19.5rem]">
+            收起 <i class="fas fa-chevron-right"></i>
+        </button>
+        <button id="show-right-btn" onclick="toggleRightSidebar()" class="float-btn hidden top-1/2 right-2 -translate-y-1/2">
+            <i class="fas fa-chevron-left"></i>
+        </button>
     </div>
 
-    <div class="fullscreen-overlay" id="fullscreenOverlay">
-        <div class="fullscreen-header">
-            <div style="display: flex; align-items: center;">
-                <div class="fullscreen-title">座位排布图 - 全屏模式</div>
-                <div class="fullscreen-hint">💡 拖拽座位可以互换位置 | 拖拽人员到请假区域标记请假</div>
-            </div>
-            <button class="close-fullscreen-btn" onclick="closeFullscreen()">✖ 关闭全屏</button>
+    <!-- 底部奖池面板（可拖拽调整高度） -->
+    <div id="stats-panel" class="stats-panel flex-shrink-0 relative z-40" style="height: 300px;">
+        <!-- 拖拽手柄 -->
+        <div class="resize-handle" id="resize-handle">
+            <i class="fas fa-grip-lines resize-handle-icon"></i>
         </div>
-        <div class="fullscreen-seating">
-            <div class="stage">🎬 舞 台 🎬</div>
-            <div class="seating-area" id="fullscreenSeatingArea"></div>
-            
-            <!-- 全屏模式下的请假容器 -->
-            <div class="leave-section fullscreen-leave">
-                <div class="panel-title">🚫 请假人员名单</div>
-                <div class="leave-list" id="fullscreenLeaveList" ondrop="dropToFullscreenLeave(event)" ondragover="allowDrop(event)" ondragenter="dragEnterFullscreenLeave(event)" ondragleave="dragLeaveFullscreenLeave(event)"></div>
+        
+        <div class="px-3 py-2 lg:px-4 lg:py-3 h-full flex gap-3 pt-4">
+            <!-- 奖池人员 -->
+            <div class="flex-1 pool-container">
+                <div class="pool-header">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-users text-theme-primary"></i>
+                        <span class="font-bold text-theme-primary text-sm">奖池人员</span>
+                    </div>
+                    <span class="text-theme-secondary text-xs">
+                        共 <strong id="pool-count" class="text-theme-primary text-base">0</strong> 人
+                    </span>
+                </div>
+                <div id="pool-list" class="pool-content">
+                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无数据</div>
+                </div>
             </div>
 
-            <div class="legend" id="fullscreenLegend" style="display: none; margin-top: 30px;">
-                <strong style="width: 100%; margin-bottom: 5px;">部门颜色图例：</strong>
+            <!-- 已中奖人员 -->
+            <div class="flex-1 pool-container">
+                <div class="pool-header">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-trophy text-theme-primary"></i>
+                        <span class="font-bold text-theme-primary text-sm">已中奖人员</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-theme-secondary text-xs">
+                            共 <strong id="winner-count" class="text-theme-primary text-base">0</strong> 人
+                        </span>
+                        <button onclick="resetAllWinners()" class="text-xs bg-orange-600/80 hover:bg-orange-600 text-white px-2 py-1 rounded transition-all" title="全部回池">
+                            <i class="fas fa-redo text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="winner-list" class="pool-content">
+                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let seatingData = [];
-        let availablePeople = [];
-        let deptColors = {};
-        let dragSourceType = null;
-        let dragSourceData = null;
-        let globalOpacity = 0.7;
-        // 新增：请假人员数组
-        let leavePeople = [];
+        // --- 核心逻辑 ---
+        
+        let allPeople = [];
+        let excludePeople = [];
+        let roundHistory = []; 
+        let currentRound = 0;
+        let isRolling = false;
+        let timer = null;
+        let leftSidebarVisible = true;
+        let rightSidebarVisible = true;
+        let statsPanelVisible = true;
 
-        const STORAGE_KEY = 'seatingLayout_v1';
+        const $ = (id) => document.getElementById(id);
 
-        const defaultColors = [
-            '#4CAF50', '#2196F3', '#FF9800', '#E91E63', '#9C27B0',
-            '#00BCD4', '#FFC107', '#F44336', '#3F51B5', '#009688',
-            '#FF5722', '#8BC34A', '#CDDC39', '#673AB7', '#607D8B',
-            '#795548', '#FF4081', '#536DFE', '#1DE9B6', '#FF6E40'
-        ];
+        // --- 拖拽调整高度功能 ---
+        let isResizing = false;
+        let startY = 0;
+        let startHeight = 0;
+        const minHeight = 150;
+        const maxHeight = window.innerHeight * 0.6;
 
-        function updateOpacity(value) {
-            globalOpacity = value / 100;
-            document.getElementById('opacityValue').textContent = value + '%';
+        const resizeHandle = $('resize-handle');
+        const statsPanel = $('stats-panel');
+
+        resizeHandle.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            startY = e.clientY;
+            startHeight = statsPanel.offsetHeight;
+            document.body.classList.add('resizing');
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
             
-            renderPeopleList();
-            renderDeptColorConfig();
-            renderSeating('seatingArea');
-            renderSeating('fullscreenSeatingArea');
-            renderLegend();
-            renderLeaveList();
-            renderFullscreenLeaveList();
-            saveLayout();
+            const deltaY = startY - e.clientY;
+            const newHeight = Math.min(Math.max(startHeight + deltaY, minHeight), maxHeight);
+            statsPanel.style.height = newHeight + 'px';
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.classList.remove('resizing');
+            }
+        });
+
+        resizeHandle.addEventListener('dblclick', function() {
+            statsPanel.style.height = '300px';
+        });
+
+        function setTheme(themeName) {
+            document.body.className = "h-screen flex flex-col " + (themeName === 'default' ? '' : themeName);
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
         }
 
-        function setOpacity(value) {
-            document.getElementById('opacitySlider').value = value;
-            updateOpacity(value);
-        }
-
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        function saveLayout() {
-            const layoutData = {
-                seatingData: seatingData,
-                availablePeople: availablePeople,
-                leavePeople: leavePeople,
-                deptColors: deptColors,
-                globalOpacity: globalOpacity,
-                timestamp: new Date().toISOString()
-            };
-
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(layoutData));
-                showSaveStatus();
-                console.log('布局已保存到浏览器');
-            } catch (e) {
-                alert('保存失败：' + e.message);
+        function parsePerson(line) {
+            line = line.trim();
+            if (!line) return null;
+            if (line.includes('：') || line.includes(':')) {
+                const separator = line.includes('：') ? '：' : ':';
+                const parts = line.split(separator);
+                return { fullText: line, dept: parts[0].trim(), name: parts.slice(1).join(separator).trim() };
+            } else {
+                return { fullText: line, dept: '', name: line };
             }
         }
 
-        function loadLayout() {
-            try {
-                const savedData = localStorage.getItem(STORAGE_KEY);
-                if (savedData) {
-                    const layoutData = JSON.parse(savedData);
-                    seatingData = layoutData.seatingData || [];
-                    availablePeople = layoutData.availablePeople || [];
-                    leavePeople = layoutData.leavePeople || [];
-                    deptColors = layoutData.deptColors || {};
-                    globalOpacity = layoutData.globalOpacity !== undefined ? layoutData.globalOpacity : 0.7;
-                    
-                    const opacityPercent = Math.round(globalOpacity * 100);
-                    document.getElementById('opacitySlider').value = opacityPercent;
-                    document.getElementById('opacityValue').textContent = opacityPercent + '%';
-                    
-                    console.log('已加载保存的布局，保存时间：', layoutData.timestamp);
-                    return true;
-                }
-            } catch (e) {
-                console.error('加载布局失败：', e);
-            }
-            return false;
-        }
-
-        function showSaveStatus() {
-            const status = document.getElementById('saveStatus');
-            status.classList.add('show');
-            setTimeout(() => {
-                status.classList.remove('show');
-            }, 2000);
-        }
-
-        function exportLayout() {
-            const layoutData = {
-                seatingData: seatingData,
-                availablePeople: availablePeople,
-                leavePeople: leavePeople,
-                deptColors: deptColors,
-                globalOpacity: globalOpacity,
-                timestamp: new Date().toISOString(),
-                version: '1.0'
-            };
-
-            const dataStr = JSON.stringify(layoutData, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        function toggleLeftSidebar() {
+            leftSidebarVisible = !leftSidebarVisible;
+            const sidebar = $('left-sidebar');
+            const closeBtn = $('left-close-btn');
+            const showBtn = $('show-left-btn');
             
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `座位布局_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-
-            alert('布局文件已导出！');
+            if (leftSidebarVisible) {
+                sidebar.classList.remove('hidden-sidebar');
+                closeBtn.style.display = 'block';
+                showBtn.classList.add('hidden');
+            } else {
+                sidebar.classList.add('hidden-sidebar');
+                closeBtn.style.display = 'none';
+                showBtn.classList.remove('hidden');
+            }
         }
 
-        function importLayout(event) {
-            const file = event.target.files[0];
+        function toggleRightSidebar() {
+            rightSidebarVisible = !rightSidebarVisible;
+            const sidebar = $('right-sidebar');
+            const closeBtn = $('right-close-btn');
+            const showBtn = $('show-right-btn');
+            
+            if (rightSidebarVisible) {
+                sidebar.classList.remove('hidden-sidebar');
+                closeBtn.style.display = 'block';
+                showBtn.classList.add('hidden');
+            } else {
+                sidebar.classList.add('hidden-sidebar');
+                closeBtn.style.display = 'none';
+                showBtn.classList.remove('hidden');
+            }
+        }
+
+        function hideAllPanels() {
+            if (leftSidebarVisible) {
+                leftSidebarVisible = false;
+                $('left-sidebar').classList.add('hidden-sidebar');
+                $('left-close-btn').style.display = 'none';
+                $('show-left-btn').classList.remove('hidden');
+            }
+            
+            if (rightSidebarVisible) {
+                rightSidebarVisible = false;
+                $('right-sidebar').classList.add('hidden-sidebar');
+                $('right-close-btn').style.display = 'none';
+                $('show-right-btn').classList.remove('hidden');
+            }
+            
+            if (statsPanelVisible) {
+                statsPanelVisible = false;
+                $('stats-panel').classList.add('hidden-stats');
+            }
+        }
+
+        function showAllPanels() {
+            if (!leftSidebarVisible) {
+                leftSidebarVisible = true;
+                $('left-sidebar').classList.remove('hidden-sidebar');
+                $('left-close-btn').style.display = 'block';
+                $('show-left-btn').classList.add('hidden');
+            }
+            
+            if (!rightSidebarVisible) {
+                rightSidebarVisible = true;
+                $('right-sidebar').classList.remove('hidden-sidebar');
+                $('right-close-btn').style.display = 'block';
+                $('show-right-btn').classList.add('hidden');
+            }
+            
+            if (!statsPanelVisible) {
+                statsPanelVisible = true;
+                $('stats-panel').classList.remove('hidden-stats');
+            }
+        }
+
+        function loadNames(input) {
+            const file = input.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const layoutData = JSON.parse(e.target.result);
-                    
-                    if (!layoutData.seatingData || !layoutData.availablePeople) {
-                        throw new Error('文件格式不正确');
-                    }
+            reader.onload = (e) => {
+                const lines = e.target.result.split(/\r?\n/);
+                allPeople = lines.map(parsePerson).filter(p => p !== null);
+                const uniqueMap = new Map();
+                allPeople.forEach(p => uniqueMap.set(p.fullText, p));
+                allPeople = Array.from(uniqueMap.values());
+                
+                $('file-status').innerHTML = `<span class="text-green-400 font-bold">✓ ${allPeople.length} 人</span>`;
+                $('total-people').textContent = allPeople.length;
+                updatePoolDisplay();
+                celebrate();
+            };
+            reader.readAsText(file);
+        }
 
-                    seatingData = layoutData.seatingData;
-                    availablePeople = layoutData.availablePeople;
-                    leavePeople = layoutData.leavePeople || [];
-                    deptColors = layoutData.deptColors || {};
-                    globalOpacity = layoutData.globalOpacity !== undefined ? layoutData.globalOpacity : 0.7;
-
-                    const opacityPercent = Math.round(globalOpacity * 100);
-                    document.getElementById('opacitySlider').value = opacityPercent;
-                    document.getElementById('opacityValue').textContent = opacityPercent + '%';
-
-                    renderPeopleList();
-                    renderLeaveList();
-                    renderFullscreenLeaveList();
-                    renderDeptColorConfig();
-                    renderLegend();
-                    renderSeating('seatingArea');
-                    renderSeating('fullscreenSeatingArea');
-                    updateStats();
-                    saveLayout();
-
-                    alert('布局导入成功！\n导入时间：' + (layoutData.timestamp || '未知'));
-                } catch (error) {
-                    alert('导入失败：' + error.message);
+        function loadExclude(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const lines = e.target.result.split(/\r?\n/);
+                excludePeople = lines.map(parsePerson).filter(p => p !== null);
+                const uniqueMap = new Map();
+                excludePeople.forEach(p => uniqueMap.set(p.fullText, p));
+                excludePeople = Array.from(uniqueMap.values());
+                $('exclude-status').innerHTML = `<span class="text-red-400">已上传 ${excludePeople.length} 人</span>`;
+                if ($('enable-exclude').checked) {
+                    updatePoolDisplay();
                 }
             };
             reader.readAsText(file);
-            event.target.value = '';
         }
 
-        function parsePerson(text) {
-            const trimmed = text.trim();
-            if (trimmed.includes('-')) {
-                const parts = trimmed.split('-');
-                return {
-                    dept: parts[0].trim(),
-                    name: parts.slice(1).join('-').trim(),
-                    fullText: trimmed
-                };
+        function getAllWinners() {
+            const allWinners = [];
+            roundHistory.forEach(round => {
+                allWinners.push(...round.winners);
+            });
+            const uniqueMap = new Map();
+            allWinners.forEach(w => uniqueMap.set(w.fullText, w));
+            return Array.from(uniqueMap.values());
+        }
+
+        function getCurrentPool() {
+            const allowRepeat = $('allow-repeat').checked;
+            const enableExclude = $('enable-exclude').checked;
+            let pool = [...allPeople];
+            
+            if (enableExclude && excludePeople.length > 0) {
+                const excludeTexts = excludePeople.map(p => p.fullText);
+                pool = pool.filter(p => !excludeTexts.includes(p.fullText));
+            }
+            
+            if (!allowRepeat) {
+                const winnerTexts = getAllWinners().map(w => w.fullText);
+                pool = pool.filter(p => !winnerTexts.includes(p.fullText));
+            }
+            
+            return pool;
+        }
+
+        function updatePoolDisplay() {
+            const pool = getCurrentPool();
+            const winners = getAllWinners();
+            
+            const poolList = $('pool-list');
+            if (pool.length === 0) {
+                poolList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">奖池已空</div>';
             } else {
-                return {
-                    dept: '',
-                    name: trimmed,
-                    fullText: trimmed
-                };
+                poolList.innerHTML = pool.map(p => 
+                    `<span class="person-tag" title="${p.dept || '无部门'}">
+                        ${p.name}
+                    </span>`
+                ).join('');
             }
-        }
-
-        function isSeatDisabled(rowIndex, seatIndex) {
-            if (rowIndex === 0) {
-                return seatIndex === 0 || seatIndex === 1 || seatIndex === 10 || seatIndex === 11;
+            $('pool-count').textContent = pool.length;
+            
+            const winnerList = $('winner-list');
+            if (winners.length === 0) {
+                winnerList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>';
+            } else {
+                winnerList.innerHTML = winners.map(w => 
+                    `<span class="person-tag" title="${w.dept || '无部门'} - 点击回池" onclick="returnToPool('${w.fullText.replace(/'/g, "\\'")}')">
+                        ${w.name} <i class="fas fa-undo ml-1 text-xs"></i>
+                    </span>`
+                ).join('');
             }
-            return false;
+            $('winner-count').textContent = winners.length;
         }
 
-        function initSeatingStructure() {
-            seatingData = [];
-            for (let i = 0; i < 10; i++) {
-                seatingData.push({
-                    leftSeats: Array(12).fill(null),
-                    rightSeats: Array(12).fill(null)
-                });
-            }
-        }
-
-        function getDeptColor(dept) {
-            if (!dept) return hexToRgba('#4CAF50', globalOpacity);
-            const baseColor = deptColors[dept] || '#4CAF50';
-            return hexToRgba(baseColor, globalOpacity);
-        }
-
-        function autoConfigDeptColors() {
-            const departments = new Set();
-            availablePeople.forEach(person => {
-                if (person.dept) {
-                    departments.add(person.dept);
-                }
-            });
-
-            seatingData.forEach(row => {
-                [...row.leftSeats, ...row.rightSeats].forEach(person => {
-                    if (person && person.dept) {
-                        departments.add(person.dept);
-                    }
-                });
-            });
-
-            leavePeople.forEach(person => {
-                if (person.dept) {
-                    departments.add(person.dept);
-                }
-            });
-
-            let colorIndex = Object.keys(deptColors).length;
-            departments.forEach(dept => {
-                if (!deptColors[dept]) {
-                    deptColors[dept] = defaultColors[colorIndex % defaultColors.length];
-                    colorIndex++;
-                }
-            });
-
-            renderDeptColorConfig();
-            renderLegend();
-        }
-
-        function renderDeptColorConfig() {
-            const deptColorList = document.getElementById('deptColorList');
-            const departments = Object.keys(deptColors).sort();
-
-            if (departments.length === 0) {
-                deptColorList.innerHTML = '<p style="color: #999; font-size: 12px; text-align: center; padding: 20px;">导入名单后，将自动显示部门颜色配置</p>';
+        function returnToPool(fullText) {
+            if (!confirm(`确定将 ${fullText.split(/：|:/)[1] || fullText} 放回奖池吗？\n\n此操作将删除该人员的所有中奖记录！`)) {
                 return;
             }
-
-            deptColorList.innerHTML = '';
-            departments.forEach(dept => {
-                const item = document.createElement('div');
-                item.className = 'dept-color-item';
-
-                const label = document.createElement('label');
-                label.textContent = dept;
-
-                const colorInput = document.createElement('input');
-                colorInput.type = 'color';
-                colorInput.value = deptColors[dept];
-                colorInput.addEventListener('change', (e) => {
-                    deptColors[dept] = e.target.value;
-                    preview.style.background = hexToRgba(e.target.value, globalOpacity);
-                    renderPeopleList();
-                    renderLeaveList();
-                    renderFullscreenLeaveList();
-                    renderSeating('seatingArea');
-                    renderSeating('fullscreenSeatingArea');
-                    renderLegend();
-                    saveLayout();
-                });
-
-                const preview = document.createElement('div');
-                preview.className = 'dept-color-preview';
-                preview.style.background = hexToRgba(deptColors[dept], globalOpacity);
-                preview.textContent = '预览';
-
-                item.appendChild(label);
-                item.appendChild(colorInput);
-                item.appendChild(preview);
-                deptColorList.appendChild(item);
+            
+            roundHistory.forEach(round => {
+                round.winners = round.winners.filter(w => w.fullText !== fullText);
             });
+            
+            roundHistory = roundHistory.filter(round => round.winners.length > 0);
+            
+            updatePoolDisplay();
+            updateHistory();
+            celebrate();
         }
 
-        function renderLegend() {
-            const legend = document.getElementById('legend');
-            const fullscreenLegend = document.getElementById('fullscreenLegend');
-            const departments = Object.keys(deptColors).sort();
-
-            if (departments.length === 0) {
-                legend.style.display = 'none';
-                fullscreenLegend.style.display = 'none';
+        function resetAllWinners() {
+            if (getAllWinners().length === 0) {
+                alert('❌ 当前没有中奖人员！');
                 return;
             }
+            
+            if (!confirm('⚠️ 确定要将所有中奖人员放回奖池吗？\n\n此操作将清空所有中奖记录！')) {
+                return;
+            }
+            
+            roundHistory = [];
+            currentRound = 0;
+            updatePoolDisplay();
+            updateHistory();
+            celebrate();
+        }
 
-            const legendHTML = '<strong style="width: 100%; margin-bottom: 5px;">部门颜色图例：</strong>' +
-                departments.map(dept => `
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: ${hexToRgba(deptColors[dept], globalOpacity)}"></div>
-                        <span class="legend-label">${dept}</span>
+        // 监听奖品名称和赞助官输入
+        $('prize-name').addEventListener('input', (e) => {
+            $('display-prize').textContent = e.target.value || '🎁 准备抽奖';
+        });
+
+        $('sponsor-name').addEventListener('input', (e) => {
+            const sponsor = e.target.value.trim();
+            if (sponsor) {
+                $('display-sponsor').classList.remove('hidden');
+                $('sponsor-text').textContent = sponsor;
+            } else {
+                $('display-sponsor').classList.add('hidden');
+            }
+        });
+
+        $('draw-count').addEventListener('input', (e) => $('display-count').textContent = e.target.value || 1);
+        $('allow-repeat').addEventListener('change', () => { updatePoolDisplay(); });
+
+        function start() {
+            if (allPeople.length === 0) return alert('❌ 请先导入人员名单！');
+            
+            // 验证奖品名称必填
+            const prizeName = $('prize-name').value.trim();
+            if (!prizeName) {
+                alert('❌ 请填写奖品名称！');
+                $('prize-name').focus();
+                return;
+            }
+            
+            // 验证赞助官必填
+            const sponsor = $('sponsor-name').value.trim();
+            if (!sponsor) {
+                alert('❌ 请填写梦想赞助官！');
+                $('sponsor-name').focus();
+                return;
+            }
+            
+            const count = parseInt($('draw-count').value) || 1;
+            const pool = getCurrentPool();
+            
+            if (pool.length < count) return alert(`❌ 可用人数不足！\n需要: ${count} 人\n剩余: ${pool.length} 人`);
+
+            isRolling = true;
+            $('btn-start').classList.add('hidden');
+            $('btn-stop').classList.remove('hidden');
+            $('btn-clear').classList.add('hidden');
+            $('result-area').classList.add('hidden');
+            $('rolling-area').classList.remove('hidden');
+            
+            hideAllPanels();
+            createCoins();
+
+            timer = setInterval(() => {
+                const person = pool[Math.floor(Math.random() * pool.length)];
+                $('rolling-name').textContent = person.name;
+                $('rolling-dept').textContent = person.dept || '';
+            }, 50);
+        }
+
+        function stop() {
+            clearInterval(timer);
+            isRolling = false;
+
+            const count = parseInt($('draw-count').value) || 1;
+            const prize = $('prize-name').value.trim() || '幸运奖';
+            const sponsor = $('sponsor-name').value.trim() || '';
+            let pool = getCurrentPool();
+            
+            const shuffled = pool.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, count);
+
+            const now = new Date().toLocaleString('zh-CN', { hour12: false });
+            currentRound++;
+
+            roundHistory.push({ 
+                round: currentRound, 
+                prize: prize, 
+                sponsor: sponsor,
+                count: count, 
+                winners: selected, 
+                time: now 
+            });
+
+            showWinners(selected, prize);
+            updateHistory();
+            updatePoolDisplay();
+            fireworks();
+
+            $('btn-stop').classList.add('hidden');
+            $('btn-start').classList.remove('hidden');
+            $('btn-clear').classList.remove('hidden');
+        }
+
+        /**
+         * 智能自适应布局算法
+         * 根据人数和屏幕尺寸自动计算最佳列数和卡片大小
+         */
+        function calculateOptimalLayout(count) {
+            // 获取可用屏幕宽度（85%屏幕宽度用于显示）
+            const availableWidth = window.innerWidth * 0.85;
+            
+            let cols, cardSize, nameSize, deptSize, gap, padding;
+            
+            // 特殊情况：1-9人固定布局
+            if (count === 1) {
+                return { cols: 1, cardSize: 400, nameSize: 'text-7xl', deptSize: 'text-3xl', gap: '0', padding: 4 };
+            } else if (count === 2) {
+                return { cols: 2, cardSize: 340, nameSize: 'text-5xl', deptSize: 'text-2xl', gap: '2rem', padding: 4 };
+            } else if (count <= 4) {
+                return { cols: 2, cardSize: 300, nameSize: 'text-4xl', deptSize: 'text-xl', gap: '1.75rem', padding: 4 };
+            } else if (count <= 6) {
+                return { cols: 3, cardSize: 260, nameSize: 'text-3xl', deptSize: 'text-lg', gap: '1.5rem', padding: 4 };
+            } else if (count <= 9) {
+                return { cols: 3, cardSize: 240, nameSize: 'text-2xl', deptSize: 'text-base', gap: '1.5rem', padding: 3 };
+            }
+            
+            // 10人以上：智能计算
+            // 计算最优列数（目标：接近正方形网格，略微偏宽）
+            const optimalCols = Math.ceil(Math.sqrt(count * 1.3));
+            
+            // 根据列数和可用宽度计算卡片大小
+            const gapSize = Math.max(12, 24 - optimalCols * 1.5); // 列数越多，间距越小
+            const totalGapWidth = gapSize * (optimalCols - 1);
+            let calculatedCardSize = (availableWidth - totalGapWidth) / optimalCols;
+            
+            // 限制卡片大小范围
+            const minCardSize = 100;
+            const maxCardSize = 200;
+            calculatedCardSize = Math.max(minCardSize, Math.min(maxCardSize, calculatedCardSize));
+            
+            // 根据卡片大小动态调整字号
+            if (calculatedCardSize >= 180) {
+                nameSize = 'text-xl';
+                deptSize = 'text-sm';
+                padding = 3;
+            } else if (calculatedCardSize >= 150) {
+                nameSize = 'text-lg';
+                deptSize = 'text-xs';
+                padding = 3;
+            } else if (calculatedCardSize >= 120) {
+                nameSize = 'text-base';
+                deptSize = 'text-xs';
+                padding = 2;
+            } else {
+                nameSize = 'text-sm';
+                deptSize = 'text-xs';
+                padding = 2;
+            }
+            
+            return {
+                cols: optimalCols,
+                cardSize: Math.floor(calculatedCardSize),
+                nameSize: nameSize,
+                deptSize: deptSize,
+                gap: `${gapSize}px`,
+                padding: padding
+            };
+        }
+
+        function showWinners(people, prize) {
+            $('rolling-area').classList.add('hidden');
+            $('result-area').classList.remove('hidden');
+
+            const count = people.length;
+            const layout = calculateOptimalLayout(count);
+            
+            // 使用flex居中Grid容器
+            let html = `
+                <div class="flex items-center justify-center w-full h-full">
+                    <div class="grid place-items-center" style="grid-template-columns: repeat(${layout.cols}, ${layout.cardSize}px); gap: ${layout.gap};">`;
+            
+            people.forEach((person, i) => {
+                html += `
+                <div class="winner-card rounded-2xl p-${layout.padding} relative overflow-hidden flex flex-col justify-center items-center text-center group hover:scale-105 transition-transform duration-300" 
+                     style="width: ${layout.cardSize}px; height: ${layout.cardSize}px; animation-delay: ${i * 0.02}s;">
+                    <div class="absolute top-1 right-2 text-xl opacity-10 group-hover:opacity-30 transition">🎉</div>
+                    
+                    <div class="${layout.nameSize} font-black text-theme-primary mb-2 break-words w-full leading-tight px-1 line-clamp-2">
+                        ${person.name}
                     </div>
-                `).join('');
-
-            legend.innerHTML = legendHTML;
-            legend.style.display = 'flex';
-            fullscreenLegend.innerHTML = legendHTML;
-            fullscreenLegend.style.display = 'flex';
-        }
-
-        function renderLeaveList() {
-            const leaveList = document.getElementById('leaveList');
-            leaveList.innerHTML = '';
-
-            if (leavePeople.length === 0) {
-                leaveList.innerHTML = '<p style="color: #999; font-size: 12px; text-align: center; padding: 20px;">拖拽请假人员到此处</p>';
-                return;
-            }
-
-            leavePeople.forEach((person, index) => {
-                const item = document.createElement('div');
-                item.className = 'leave-item';
-                item.draggable = true;
-                item.setAttribute('data-index', index);
-                
-                item.ondragstart = (e) => {
-                    e.dataTransfer.setData("text", JSON.stringify({
-                        type: 'leave',
-                        index: index,
-                        person: person
-                    }));
-                    item.classList.add('dragging');
-                    setTimeout(() => {
-                        item.classList.add('dragging');
-                    }, 0);
-                };
-                
-                item.ondragend = () => {
-                    item.classList.remove('dragging');
-                };
-                
-                item.onclick = () => {
-                    if (confirm(`确定将【${person.name}】从请假名单移除？`)) {
-                        leavePeople.splice(index, 1);
-                        availablePeople.push(person);
-                        renderLeaveList();
-                        renderFullscreenLeaveList();
-                        renderPeopleList();
-                        updateStats();
-                        saveLayout();
-                    }
-                };
-
-                const color = getDeptColor(person.dept);
-                item.style.background = color;
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'person-name';
-                nameDiv.textContent = person.name;
-
-                const deptDiv = document.createElement('div');
-                deptDiv.className = 'person-dept';
-                deptDiv.textContent = person.dept || '无部门';
-
-                item.appendChild(nameDiv);
-                item.appendChild(deptDiv);
-                leaveList.appendChild(item);
+                    
+                    <div class="w-2/3 mb-1.5" style="border-bottom: 1.5px solid var(--accent-color);"></div>
+                    
+                    ${person.dept ? `
+                        <div class="${layout.deptSize} text-theme-secondary opacity-80 font-medium px-1 line-clamp-1">
+                            ${person.dept}
+                        </div>
+                    ` : `<div class="${layout.deptSize} text-theme-secondary opacity-40">-</div>`}
+                </div>`;
             });
-        }
-
-        function renderFullscreenLeaveList() {
-            const leaveList = document.getElementById('fullscreenLeaveList');
-            leaveList.innerHTML = '';
-
-            if (leavePeople.length === 0) {
-                leaveList.innerHTML = '<p style="color: #999; font-size: 12px; text-align: center; padding: 20px;">拖拽请假人员到此处</p>';
-                return;
-            }
-
-            leavePeople.forEach((person, index) => {
-                const item = document.createElement('div');
-                item.className = 'leave-item';
-                item.draggable = true;
-                item.setAttribute('data-index', index);
-                
-                item.ondragstart = (e) => {
-                    e.dataTransfer.setData("text", JSON.stringify({
-                        type: 'leave',
-                        index: index,
-                        person: person
-                    }));
-                    item.classList.add('dragging');
-                    setTimeout(() => {
-                        item.classList.add('dragging');
-                    }, 0);
-                };
-                
-                item.ondragend = () => {
-                    item.classList.remove('dragging');
-                };
-
-                item.onclick = () => {
-                    if (confirm(`确定将【${person.name}】从请假名单移除？`)) {
-                        leavePeople.splice(index, 1);
-                        availablePeople.push(person);
-                        renderLeaveList();
-                        renderFullscreenLeaveList();
-                        renderPeopleList();
-                        updateStats();
-                        saveLayout();
-                    }
-                };
-
-                const color = getDeptColor(person.dept);
-                item.style.background = color;
-
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'person-name';
-                nameDiv.textContent = person.name;
-
-                const deptDiv = document.createElement('div');
-                deptDiv.className = 'person-dept';
-                deptDiv.textContent = person.dept || '无部门';
-
-                item.appendChild(nameDiv);
-                item.appendChild(deptDiv);
-                leaveList.appendChild(item);
-            });
-        }
-
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function dragEnterLeave(ev) {
-            ev.preventDefault();
-            document.getElementById('leaveList').classList.add('drag-over');
-        }
-
-        function dragLeaveLeave(ev) {
-            if (!ev.currentTarget.contains(ev.relatedTarget)) {
-                document.getElementById('leaveList').classList.remove('drag-over');
-            }
-        }
-
-        function dropToLeave(ev) {
-            ev.preventDefault();
-            const leaveList = document.getElementById('leaveList');
-            leaveList.classList.remove('drag-over');
-
-            const data = JSON.parse(ev.dataTransfer.getData("text"));
             
-            if (data.type === 'person') {
-                availablePeople = availablePeople.filter(p => p.fullText !== data.person.fullText);
-                leavePeople.push(data.person);
-            }
-            else if (data.type === 'seat') {
-                const { rowIndex, side, seatIndex } = data;
-                const person = seatingData[rowIndex][side][seatIndex];
-                if (person) {
-                    seatingData[rowIndex][side][seatIndex] = null;
-                    leavePeople.push(person);
-                }
-            }
-
-            renderPeopleList();
-            renderLeaveList();
-            renderFullscreenLeaveList();
-            renderSeating('seatingArea');
-            renderSeating('fullscreenSeatingArea');
-            updateStats();
-            saveLayout();
-        }
-
-        function dragEnterFullscreenLeave(ev) {
-            ev.preventDefault();
-            document.getElementById('fullscreenLeaveList').classList.add('drag-over');
-        }
-
-        function dragLeaveFullscreenLeave(ev) {
-            if (!ev.currentTarget.contains(ev.relatedTarget)) {
-                document.getElementById('fullscreenLeaveList').classList.remove('drag-over');
-            }
-        }
-
-        function dropToFullscreenLeave(ev) {
-            ev.preventDefault();
-            const leaveList = document.getElementById('fullscreenLeaveList');
-            leaveList.classList.remove('drag-over');
-
-            const data = JSON.parse(ev.dataTransfer.getData("text"));
+            html += `
+                    </div>
+                </div>`;
             
-            if (data.type === 'seat') {
-                const { rowIndex, side, seatIndex } = data;
-                const person = seatingData[rowIndex][side][seatIndex];
-                if (person) {
-                    seatingData[rowIndex][side][seatIndex] = null;
-                    leavePeople.push(person);
-                }
-            }
-
-            renderPeopleList();
-            renderLeaveList();
-            renderFullscreenLeaveList();
-            renderSeating('seatingArea');
-            renderSeating('fullscreenSeatingArea');
-            updateStats();
-            saveLayout();
+            $('result-grid').innerHTML = html;
         }
 
-        function initPeople() {
-            availablePeople = [];
-            for (let i = 1; i <= 232; i++) {
-                availablePeople.push({
-                    dept: '',
-                    name: i.toString(),
-                    fullText: i.toString()
-                });
-            }
-            renderPeopleList();
+        function clearScreen() {
+            $('result-area').classList.add('hidden');
+            $('rolling-area').classList.remove('hidden');
+            $('rolling-name').textContent = '准备就绪';
+            $('rolling-dept').textContent = '';
+            $('btn-clear').classList.add('hidden');
+            showAllPanels();
         }
 
-        function useDefaultNames() {
-            if (!confirm('使用默认编号将清空当前所有数据，确定继续吗？')) {
+        function updateHistory() {
+            if (roundHistory.length === 0) {
+                $('history-list').innerHTML = '<div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>';
                 return;
             }
             
-            availablePeople = [];
-            leavePeople = [];
-            for (let i = 1; i <= 232; i++) {
-                availablePeople.push({
-                    dept: '',
-                    name: i.toString(),
-                    fullText: i.toString()
-                });
-            }
-            deptColors = {};
-            initSeatingStructure();
-            renderPeopleList();
-            renderLeaveList();
-            renderFullscreenLeaveList();
-            renderDeptColorConfig();
-            renderLegend();
-            renderSeating('seatingArea');
-            renderSeating('fullscreenSeatingArea');
-            updateStats();
-            saveLayout();
-        }
+            const reversed = [...roundHistory].reverse();
+            let html = '';
+            
+            reversed.forEach((round, index) => {
+                const roundId = `round-${round.round}`;
+                const isExpanded = index === 0 ? 'expanded' : ''; 
+                const iconClass = index === 0 ? '' : 'collapsed';
 
-        function clearAll() {
-            if (confirm('确定清空所有座位分配并移除所有请假状态吗？')) {
-                seatingData.forEach(row => {
-                    row.leftSeats.forEach(person => {
-                        if (person) availablePeople.push(person);
-                    });
-                    row.rightSeats.forEach(person => {
-                        if (person) availablePeople.push(person);
-                    });
-                    row.leftSeats.fill(null);
-                    row.rightSeats.fill(null);
-                });
-                leavePeople.forEach(person => {
-                    availablePeople.push(person);
-                });
-                leavePeople = [];
-                
-                renderPeopleList();
-                renderLeaveList();
-                renderFullscreenLeaveList();
-                renderSeating('seatingArea');
-                renderSeating('fullscreenSeatingArea');
-                updateStats();
-                saveLayout();
-            }
-        }
-
-        function appendNames() {
-            const text = document.getElementById('nameInput').value.trim();
-            if (!text) {
-                alert('请输入人员名单！');
-                return;
-            }
-
-            const lines = text.split('\n').filter(line => line.trim());
-            const newPeople = [];
-
-            lines.forEach(line => {
-                const person = parsePerson(line);
-                if (person.name) {
-                    newPeople.push(person);
-                }
+                html += `
+                <div class="bg-black/20 border border-theme rounded-xl shadow mb-2 overflow-hidden" style="animation: slideIn 0.3s ease forwards ${index * 0.05}s">
+                    <div class="flex items-center justify-between p-2 lg:p-3 cursor-pointer hover:bg-white/5 transition" onclick="toggleRound('${roundId}')">
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <i class="fas fa-chevron-down collapse-icon text-theme-primary text-xs ${iconClass}" id="icon-${roundId}"></i>
+                            <span class="bg-theme-sidebar border border-theme text-theme-primary px-1.5 py-0.5 rounded text-[10px] lg:text-xs whitespace-nowrap">第${round.round}轮</span>
+                            <span class="text-theme-secondary font-bold text-xs lg:text-sm truncate">${round.prize}</span>
+                        </div>
+                        <span class="text-theme-primary font-bold text-xs lg:text-sm">×${round.count}</span>
+                    </div>
+                    
+                    <div class="round-content ${isExpanded}" id="${roundId}">
+                        <div class="round-inner p-2 lg:p-3 pt-0 space-y-1 lg:space-y-2">
+                            <div class="h-px bg-theme opacity-20 mb-1"></div>
+                            ${round.sponsor ? `
+                                <div class="text-center mb-2">
+                                    <span class="text-[10px] bg-purple-600/30 text-purple-200 px-2 py-0.5 rounded-full border border-purple-400/30">
+                                        <i class="fas fa-hand-holding-heart mr-1"></i>${round.sponsor}
+                                    </span>
+                                </div>
+                            ` : ''}
+                            ${round.winners.map((person, i) => `
+                                <div class="flex justify-between items-center text-xs lg:text-sm">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-theme-secondary opacity-50 text-[10px] w-3">${i + 1}.</span>
+                                        <span class="text-theme-primary font-bold">${person.name}</span>
+                                        ${person.dept ? `<span class="text-theme-secondary opacity-60 text-[10px]">(${person.dept})</span>` : ''}
+                                    </div>
+                                    <i class="fas fa-check text-green-500 text-[10px]"></i>
+                                </div>
+                            `).join('')}
+                            <div class="text-right mt-1 text-theme-secondary opacity-40 text-[10px] scale-90 origin-right">
+                                ${round.time}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             });
-
-            if (newPeople.length === 0) {
-                alert('未识别到有效人员！');
-                return;
-            }
-
-            availablePeople = [...availablePeople, ...newPeople];
-            autoConfigDeptColors();
-            renderPeopleList();
-            renderDeptColorConfig();
-            renderLegend();
-            updateStats();
-            saveLayout();
-
-            alert(`成功追加 ${newPeople.length} 名人员！`);
-            document.getElementById('nameInput').value = '';
+            $('history-list').innerHTML = html;
         }
 
-        function importNames() {
-            if (!confirm('导入名单将覆盖现有人员列表，确定继续吗？')) {
-                return;
-            }
-
-            const text = document.getElementById('nameInput').value.trim();
-            if (!text) {
-                alert('请输入人员名单！');
-                return;
-            }
-
-            const lines = text.split('\n').filter(line => line.trim());
-            const newPeople = [];
-
-            lines.forEach(line => {
-                const person = parsePerson(line);
-                if (person.name) {
-                    newPeople.push(person);
-                }
-            });
-
-            if (newPeople.length === 0) {
-                alert('未识别到有效人员！');
-                return;
-            }
-
-            availablePeople = newPeople;
-            deptColors = {};
-            autoConfigDeptColors();
-            renderPeopleList();
-            renderDeptColorConfig();
-            renderLegend();
-            updateStats();
-            saveLayout();
-
-            alert(`成功导入 ${newPeople.length} 名人员！`);
-            document.getElementById('nameInput').value = '';
+        function toggleRound(roundId) {
+            const content = $(roundId);
+            const icon = $('icon-' + roundId);
+            content.classList.toggle('expanded');
+            icon.classList.toggle('collapsed');
         }
 
-        function renderPeopleList() {
-    const personList = document.getElementById('personList');
-    const peopleCount = document.getElementById('peopleCount');
-    personList.innerHTML = '';
-
-    peopleCount.textContent = availablePeople.length;
-
-    if (availablePeople.length === 0) {
-        personList.innerHTML = '<p style="color: #999; font-size: 12px; text-align: center; padding: 20px;">暂无待分配人员</p>';
-        return;
-    }
-
-    // 修改：直接使用原始顺序，不排序
-    availablePeople.forEach((person, index) => {
-        const item = document.createElement('div');
-        item.className = 'person-item';
-        item.draggable = true;
-        item.setAttribute('data-index', index);
-
-        const color = getDeptColor(person.dept);
-        item.style.background = color;
-
-        // 删除按钮
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.textContent = '×';
-        deleteBtn.title = '删除此人员';
-        deleteBtn.onclick = (e) => {
-            e.stopPropagation();
-            if (confirm(`确定删除【${person.name}】吗？`)) {
-                availablePeople = availablePeople.filter(p => p.fullText !== person.fullText);
-                renderPeopleList();
-                updateStats();
-                saveLayout();
-            }
-        };
-
-        item.ondragstart = (e) => {
-            e.dataTransfer.setData("text", JSON.stringify({
-                type: 'person',
-                index: index,
-                person: person
-            }));
-            item.classList.add('dragging');
-            setTimeout(() => {
-                item.classList.add('dragging');
-            }, 0);
-        };
-
-        item.ondragend = () => {
-            item.classList.remove('dragging');
-        };
-
-        const nameDiv = document.createElement('div');
-        nameDiv.className = 'person-name';
-        nameDiv.textContent = person.name;
-
-        const deptDiv = document.createElement('div');
-        deptDiv.className = 'person-dept';
-        deptDiv.textContent = person.dept || '无部门';
-
-        item.appendChild(deleteBtn);
-        item.appendChild(nameDiv);
-        item.appendChild(deptDiv);
-        personList.appendChild(item);
-    });
-}
-
-                function renderSeating(containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-
-            seatingData.forEach((row, rowIndex) => {
-                const seatRow = document.createElement('div');
-                seatRow.className = 'seat-row';
-
-                const rowLabel = document.createElement('div');
-                rowLabel.className = 'row-label';
-                rowLabel.textContent = `第${rowIndex + 1}行`;
-                seatRow.appendChild(rowLabel);
-
-                row.leftSeats.forEach((person, seatIndex) => {
-                    const seatCell = document.createElement('div');
-                    seatCell.className = 'seat-cell';
-                    
-                    const seat = document.createElement('div');
-                    seat.className = 'seat';
-                    
-                    if (isSeatDisabled(rowIndex, seatIndex)) {
-                        seat.classList.add('disabled');
-                    } 
-                    else if (person) {
-                        seat.classList.add('occupied');
-                        seat.style.background = getDeptColor(person.dept);
-                        
-                        const dragHint = document.createElement('div');
-                        dragHint.className = 'drag-hint';
-                        dragHint.textContent = '拖拽';
-                        seat.appendChild(dragHint);
-
-                        const nameDiv = document.createElement('div');
-                        nameDiv.className = 'seat-name';
-                        nameDiv.textContent = person.name;
-
-                        const deptDiv = document.createElement('div');
-                        deptDiv.className = 'seat-dept';
-                        deptDiv.textContent = person.dept || '无部门';
-
-                        seat.appendChild(nameDiv);
-                        seat.appendChild(deptDiv);
-                    }
-
-                    seat.onclick = (e) => {
-                        if (seat.classList.contains('occupied') && !seat.classList.contains('dragging')) {
-                            if (confirm(`确定将【${person.name}】从该座位移除？`)) {
-                                seatingData[rowIndex].leftSeats[seatIndex] = null;
-                                availablePeople.push(person);
-                                renderSeating('seatingArea');
-                                renderSeating('fullscreenSeatingArea');
-                                renderPeopleList();
-                                updateStats();
-                                saveLayout();
-                            }
-                        }
-                        e.stopPropagation();
-                    };
-
-                    if (!seat.classList.contains('disabled')) {
-                        seat.draggable = true;
-
-                        seat.ondragstart = (e) => {
-                            if (seat.classList.contains('occupied')) {
-                                e.dataTransfer.setData("text", JSON.stringify({
-                                    type: 'seat',
-                                    rowIndex: rowIndex,
-                                    side: 'leftSeats',
-                                    seatIndex: seatIndex,
-                                    person: person
-                                }));
-                                seat.classList.add('dragging');
-                                setTimeout(() => {
-                                    seat.classList.add('dragging');
-                                }, 0);
-                            }
-                        };
-
-                        seat.ondragend = (e) => {
-                            seat.classList.remove('dragging');
-                            seat.classList.remove('drag-over');
-                            seat.classList.remove('swap-target');
-                            document.querySelectorAll('.seat').forEach(s => {
-                                s.classList.remove('swap-target');
-                            });
-                        };
-
-                        seat.ondragover = (e) => {
-                            e.preventDefault();
-                            if (seat.classList.contains('occupied')) {
-                                seat.classList.add('swap-target');
-                            } else {
-                                seat.classList.add('drag-over');
-                            }
-                        };
-
-                        seat.ondragleave = (e) => {
-                            if (!e.currentTarget.contains(e.relatedTarget)) {
-                                seat.classList.remove('drag-over');
-                                seat.classList.remove('swap-target');
-                            }
-                        };
-
-                        seat.ondrop = (e) => {
-                            e.preventDefault();
-                            seat.classList.remove('drag-over');
-                            seat.classList.remove('swap-target');
-
-                            const data = JSON.parse(e.dataTransfer.getData("text"));
-                            if (data.type === 'person' && !person) {
-                                availablePeople = availablePeople.filter(p => p.fullText !== data.person.fullText);
-                                seatingData[rowIndex].leftSeats[seatIndex] = data.person;
-                            }
-                            else if (data.type === 'leave' && !person) {
-                                leavePeople.splice(data.index, 1);
-                                seatingData[rowIndex].leftSeats[seatIndex] = data.person;
-                            }
-                            else if (data.type === 'seat' && (data.rowIndex !== rowIndex || data.side !== 'leftSeats' || data.seatIndex !== seatIndex)) {
-                                const sourcePerson = seatingData[data.rowIndex][data.side][data.seatIndex];
-                                const targetPerson = seatingData[rowIndex].leftSeats[seatIndex];
-                                seatingData[data.rowIndex][data.side][data.seatIndex] = targetPerson;
-                                seatingData[rowIndex].leftSeats[seatIndex] = sourcePerson;
-                            }
-
-                            renderSeating('seatingArea');
-                            renderSeating('fullscreenSeatingArea');
-                            renderPeopleList();
-                            renderLeaveList();
-                            renderFullscreenLeaveList();
-                            updateStats();
-                            saveLayout();
-                        };
-                    }
-
-                    seatCell.appendChild(seat);
-                    seatRow.appendChild(seatCell);
-                });
-
-                const aisle = document.createElement('div');
-                aisle.className = 'aisle-column';
-                seatRow.appendChild(aisle);
-
-                row.rightSeats.forEach((person, seatIndex) => {
-                    const seatCell = document.createElement('div');
-                    seatCell.className = 'seat-cell';
-                    
-                    const seat = document.createElement('div');
-                    seat.className = 'seat';
-                    
-                    if (isSeatDisabled(rowIndex, seatIndex)) {
-                        seat.classList.add('disabled');
-                    } 
-                    else if (person) {
-                        seat.classList.add('occupied');
-                        seat.style.background = getDeptColor(person.dept);
-                        
-                        const dragHint = document.createElement('div');
-                        dragHint.className = 'drag-hint';
-                        dragHint.textContent = '拖拽';
-                        seat.appendChild(dragHint);
-
-                        const nameDiv = document.createElement('div');
-                        nameDiv.className = 'seat-name';
-                        nameDiv.textContent = person.name;
-
-                        const deptDiv = document.createElement('div');
-                        deptDiv.className = 'seat-dept';
-                        deptDiv.textContent = person.dept || '无部门';
-
-                        seat.appendChild(nameDiv);
-                        seat.appendChild(deptDiv);
-                    }
-
-                    seat.onclick = (e) => {
-                        if (seat.classList.contains('occupied') && !seat.classList.contains('dragging')) {
-                            if (confirm(`确定将【${person.name}】从该座位移除？`)) {
-                                seatingData[rowIndex].rightSeats[seatIndex] = null;
-                                availablePeople.push(person);
-                                renderSeating('seatingArea');
-                                renderSeating('fullscreenSeatingArea');
-                                renderPeopleList();
-                                updateStats();
-                                saveLayout();
-                            }
-                        }
-                        e.stopPropagation();
-                    };
-
-                    if (!seat.classList.contains('disabled')) {
-                        seat.draggable = true;
-
-                        seat.ondragstart = (e) => {
-                            if (seat.classList.contains('occupied')) {
-                                e.dataTransfer.setData("text", JSON.stringify({
-                                    type: 'seat',
-                                    rowIndex: rowIndex,
-                                    side: 'rightSeats',
-                                    seatIndex: seatIndex,
-                                    person: person
-                                }));
-                                seat.classList.add('dragging');
-                                setTimeout(() => {
-                                    seat.classList.add('dragging');
-                                }, 0);
-                            }
-                        };
-
-                        seat.ondragend = (e) => {
-                            seat.classList.remove('dragging');
-                            seat.classList.remove('drag-over');
-                            seat.classList.remove('swap-target');
-                            document.querySelectorAll('.seat').forEach(s => {
-                                s.classList.remove('swap-target');
-                            });
-                        };
-
-                        seat.ondragover = (e) => {
-                            e.preventDefault();
-                            if (seat.classList.contains('occupied')) {
-                                seat.classList.add('swap-target');
-                            } else {
-                                seat.classList.add('drag-over');
-                            }
-                        };
-
-                        seat.ondragleave = (e) => {
-                            if (!e.currentTarget.contains(e.relatedTarget)) {
-                                seat.classList.remove('drag-over');
-                                seat.classList.remove('swap-target');
-                            }
-                        };
-
-                        seat.ondrop = (e) => {
-                            e.preventDefault();
-                            seat.classList.remove('drag-over');
-                            seat.classList.remove('swap-target');
-
-                            const data = JSON.parse(e.dataTransfer.getData("text"));
-                            if (data.type === 'person' && !person) {
-                                availablePeople = availablePeople.filter(p => p.fullText !== data.person.fullText);
-                                seatingData[rowIndex].rightSeats[seatIndex] = data.person;
-                            }
-                            else if (data.type === 'leave' && !person) {
-                                leavePeople.splice(data.index, 1);
-                                seatingData[rowIndex].rightSeats[seatIndex] = data.person;
-                            }
-                            else if (data.type === 'seat' && (data.rowIndex !== rowIndex || data.side !== 'rightSeats' || data.seatIndex !== seatIndex)) {
-                                const sourcePerson = seatingData[data.rowIndex][data.side][data.seatIndex];
-                                const targetPerson = seatingData[rowIndex].rightSeats[seatIndex];
-                                seatingData[data.rowIndex][data.side][data.seatIndex] = targetPerson;
-                                seatingData[rowIndex].rightSeats[seatIndex] = sourcePerson;
-                            }
-
-                            renderSeating('seatingArea');
-                            renderSeating('fullscreenSeatingArea');
-                            renderPeopleList();
-                            renderLeaveList();
-                            renderFullscreenLeaveList();
-                            updateStats();
-                            saveLayout();
-                        };
-                    }
-
-                    seatCell.appendChild(seat);
-                    seatRow.appendChild(seatCell);
-                });
-
-                container.appendChild(seatRow);
-            });
-        }
-
-        function openFullscreen() {
-            const overlay = document.getElementById('fullscreenOverlay');
-            overlay.classList.add('active');
-            renderSeating('fullscreenSeatingArea');
-            renderFullscreenLeaveList();
-            renderLegend();
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeFullscreen() {
-            const overlay = document.getElementById('fullscreenOverlay');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function updateStats() {
-            let occupied = 0;
-            seatingData.forEach(row => {
-                row.leftSeats.forEach(p => {
-                    if (p) occupied++;
-                });
-                row.rightSeats.forEach(p => {
-                    if (p) occupied++;
+        function exportResults() {
+            if (roundHistory.length === 0) return alert('❌ 暂无中奖数据');
+            let csv = '\uFEFF轮次,奖品,赞助官,姓名,部门,时间\n';
+            roundHistory.forEach(round => {
+                round.winners.forEach(person => {
+                    csv += `第${round.round}轮,${round.prize},${round.sponsor || '无'},${person.name},${person.dept || ''},${round.time}\n`;
                 });
             });
-            const total = 232;
-            const availableSeats = total - occupied;
-            const remainingPeople = availablePeople.length;
-            const leaveCount = leavePeople.length;
-
-            document.getElementById('totalSeats').textContent = 232;
-            document.getElementById('occupiedSeats').textContent = occupied;
-            document.getElementById('availableSeats').textContent = availableSeats;
-            document.getElementById('remainingPeople').textContent = remainingPeople;
-            document.getElementById('leaveCount').textContent = leaveCount;
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `中奖名单_${Date.now()}.csv`;
+            a.click();
         }
+
+        function fireworks() {
+            const colors = [
+                getComputedStyle(document.body).getPropertyValue('--text-primary'),
+                getComputedStyle(document.body).getPropertyValue('--accent-color'),
+                '#ffffff'
+            ];
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.7;
+                    for (let j = 0; j < 10; j++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'firework';
+                        particle.style.left = x + 'px';
+                        particle.style.top = y + 'px';
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        const angle = (j / 10) * Math.PI * 2;
+                        const distance = 80 + Math.random() * 80;
+                        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                        document.body.appendChild(particle);
+                        setTimeout(() => particle.remove(), 1000);
+                    }
+                }, i * 150);
+            }
+        }
+
+        function createCoins() {
+            const coins = ['💰', '🎁', '⭐', '💎', '🏆'];
+            const interval = setInterval(() => {
+                if (!isRolling) { clearInterval(interval); return; }
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+                coin.style.left = Math.random() * window.innerWidth + 'px';
+                coin.style.animationDuration = (2 + Math.random() * 3) + 's';
+                document.body.appendChild(coin);
+                setTimeout(() => coin.remove(), 5000);
+            }, 100); /* ← 这里改小一点，比如改成 200 或 150 */
+        }
+
+        function celebrate() { fireworks(); }
         
-
-        function autoAssign() {
-    if (availablePeople.length === 0) {
-        alert('暂无待分配人员！');
-        return;
-    }
-    if (!confirm(`确定将${availablePeople.length}名待分配人员按导入顺序自动分配到可用座位吗？`)) {
-        return;
-    }
-
-    // 修改：按导入顺序分配，不打乱
-    let peopleToAssign = [...availablePeople];
-
-    seatingData.forEach((row, rowIndex) => {
-        row.leftSeats.forEach((person, seatIndex) => {
-            if (!person && !isSeatDisabled(rowIndex, seatIndex) && peopleToAssign.length > 0) {
-                seatingData[rowIndex].leftSeats[seatIndex] = peopleToAssign.shift();
-            }
-        });
-        row.rightSeats.forEach((person, seatIndex) => {
-            if (!person && !isSeatDisabled(rowIndex, seatIndex) && peopleToAssign.length > 0) {
-                seatingData[rowIndex].rightSeats[seatIndex] = peopleToAssign.shift();
-            }
-        });
-    });
-
-    availablePeople = peopleToAssign;
-    renderPeopleList();
-    renderSeating('seatingArea');
-    renderSeating('fullscreenSeatingArea');
-    updateStats();
-    saveLayout();
-
-    alert(`自动分配完成！剩余${peopleToAssign.length}名人员无可用座位`);
-}
-        function init() {
-            if (!loadLayout()) {
-                initSeatingStructure();
-                initPeople();
-                autoConfigDeptColors();
-            }
-            renderPeopleList();
-            renderLeaveList();
-            renderFullscreenLeaveList();
-            renderDeptColorConfig();
-            renderLegend();
-            renderSeating('seatingArea');
-            renderSeating('fullscreenSeatingArea');
-            updateStats();
-            console.log('座位排布系统初始化完成！');
-        }
-
-        window.onload = init;
-        window.onbeforeunload = saveLayout;
+        updatePoolDisplay();
     </script>
 </body>
 </html>
