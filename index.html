@@ -1,1248 +1,1408 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎊TCL抽奖奖</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
+<html lang="zh-CN">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>🎊TCL抽奖奖</title>  
+    <script src="https://cdn.tailwindcss.com"></script>  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">  
+    <style>  
         /* --- CSS 变量与主题定义 --- */
-        :root {
+        :root {  
             /* 默认：喜庆红 */
-            --bg-gradient: linear-gradient(135deg, #c31432 0%, #dc2430 50%, #f37335 100%);
-            --sidebar-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-            --panel-bg: rgba(139, 0, 0, 0.4);
+            --bg-gradient: linear-gradient(135deg, #c31432 0%, #dc2430 50%, #f37335 100%);  
+            --sidebar-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);  
+            --panel-bg: rgba(139, 0, 0, 0.4);  
             --text-primary: #ffd700;       /* 金色标题 */
             --text-secondary: #ffecb3;     /* 浅金副标题 */
             --accent-color: #ffd700;       /* 强调色/边框 */
-            --btn-bg: linear-gradient(to right, #eab308, #ca8a04);
-            --shadow-color: rgba(255, 215, 0, 0.5);
-            --glass-border: rgba(255, 215, 0, 0.3);
-            --font-family: 'Microsoft YaHei', sans-serif;
-            --danmaku-bg: rgba(255, 215, 0, 0.2);
-            --danmaku-border: rgba(255, 215, 0, 0.4);
+            --btn-bg: linear-gradient(to right, #eab308, #ca8a04);  
+            --shadow-color: rgba(255, 215, 0, 0.5);  
+            --glass-border: rgba(255, 215, 0, 0.3);  
+            --font-family: 'Microsoft YaHei', sans-serif;  
+            --danmaku-bg: rgba(255, 215, 0, 0.2);  
+            --danmaku-border: rgba(255, 215, 0, 0.4);  
         }
 
         /* 主题：科技蓝 */
-        body.theme-tech {
-            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            --sidebar-bg: rgba(10, 25, 47, 0.95);
-            --panel-bg: rgba(0, 255, 255, 0.1);
-            --text-primary: #00f2ff;
-            --text-secondary: #a5f3fc;
-            --accent-color: #00f2ff;
-            --btn-bg: linear-gradient(to right, #06b6d4, #0891b2);
-            --shadow-color: rgba(0, 242, 255, 0.6);
-            --glass-border: rgba(0, 242, 255, 0.3);
-            --font-family: 'Segoe UI', 'Roboto', sans-serif;
-            --danmaku-bg: rgba(0, 242, 255, 0.15);
-            --danmaku-border: rgba(0, 242, 255, 0.3);
+        body.theme-tech {  
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);  
+            --sidebar-bg: rgba(10, 25, 47, 0.95);  
+            --panel-bg: rgba(0, 255, 255, 0.1);  
+            --text-primary: #00f2ff;  
+            --text-secondary: #a5f3fc;  
+            --accent-color: #00f2ff;  
+            --btn-bg: linear-gradient(to right, #06b6d4, #0891b2);  
+            --shadow-color: rgba(0, 242, 255, 0.6);  
+            --glass-border: rgba(0, 242, 255, 0.3);  
+            --font-family: 'Segoe UI', 'Roboto', sans-serif;  
+            --danmaku-bg: rgba(0, 242, 255, 0.15);  
+            --danmaku-border: rgba(0, 242, 255, 0.3);  
         }
 
         /* 主题：简约白 */
-        body.theme-white {
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --sidebar-bg: rgba(255, 255, 255, 0.95);
-            --panel-bg: rgba(255, 255, 255, 0.6);
-            --text-primary: #333333;
-            --text-secondary: #555555;
-            --accent-color: #4a90e2;
-            --btn-bg: linear-gradient(to right, #4a90e2, #357abd);
-            --shadow-color: rgba(0, 0, 0, 0.2);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --font-family: 'Helvetica Neue', sans-serif;
-            --danmaku-bg: rgba(74, 144, 226, 0.1);
-            --danmaku-border: rgba(74, 144, 226, 0.3);
+        body.theme-white {  
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);  
+            --sidebar-bg: rgba(255, 255, 255, 0.95);  
+            --panel-bg: rgba(255, 255, 255, 0.6);  
+            --text-primary: #333333;  
+            --text-secondary: #555555;  
+            --accent-color: #4a90e2;  
+            --btn-bg: linear-gradient(to right, #4a90e2, #357abd);  
+            --shadow-color: rgba(0, 0, 0, 0.2);  
+            --glass-border: rgba(0, 0, 0, 0.1);  
+            --font-family: 'Helvetica Neue', sans-serif;  
+            --danmaku-bg: rgba(74, 144, 226, 0.1);  
+            --danmaku-border: rgba(74, 144, 226, 0.3);  
         }
 
         /* 主题：暗黑金 */
-        body.theme-dark {
-            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            --sidebar-bg: #111111;
-            --panel-bg: rgba(30, 30, 30, 0.8);
-            --text-primary: #d4af37;
-            --text-secondary: #c0c0c0;
-            --accent-color: #d4af37;
-            --btn-bg: linear-gradient(to right, #d4af37, #aa8c2c);
-            --shadow-color: rgba(212, 175, 55, 0.4);
-            --glass-border: rgba(212, 175, 55, 0.3);
-            --font-family: 'Times New Roman', serif;
-            --danmaku-bg: rgba(212, 175, 55, 0.15);
-            --danmaku-border: rgba(212, 175, 55, 0.3);
+        body.theme-dark {  
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);  
+            --sidebar-bg: #111111;  
+            --panel-bg: rgba(30, 30, 30, 0.8);  
+            --text-primary: #d4af37;  
+            --text-secondary: #c0c0c0;  
+            --accent-color: #d4af37;  
+            --btn-bg: linear-gradient(to right, #d4af37, #aa8c2c);  
+            --shadow-color: rgba(212, 175, 55, 0.4);  
+            --glass-border: rgba(212, 175, 55, 0.3);  
+            --font-family: 'Times New Roman', serif;  
+            --danmaku-bg: rgba(212, 175, 55, 0.15);  
+            --danmaku-border: rgba(212, 175, 55, 0.3);  
         }
 
         /* 主题：浪漫粉 */
-        body.theme-pink {
-            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            --sidebar-bg: rgba(255, 255, 255, 0.8);
-            --panel-bg: rgba(255, 255, 255, 0.5);
-            --text-primary: #ff6b6b;
-            --text-secondary: #ff8e8e;
-            --accent-color: #ff6b6b;
-            --btn-bg: linear-gradient(to right, #ff758c, #ff7eb3);
-            --shadow-color: rgba(255, 107, 107, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --font-family: 'Microsoft YaHei', sans-serif;
-            --danmaku-bg: rgba(255, 107, 107, 0.1);
-            --danmaku-border: rgba(255, 107, 107, 0.3);
+        body.theme-pink {  
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);  
+            --sidebar-bg: rgba(255, 255, 255, 0.8);  
+            --panel-bg: rgba(255, 255, 255, 0.5);  
+            --text-primary: #ff6b6b;  
+            --text-secondary: #ff8e8e;  
+            --accent-color: #ff6b6b;  
+            --btn-bg: linear-gradient(to right, #ff758c, #ff7eb3);  
+            --shadow-color: rgba(255, 107, 107, 0.4);  
+            --glass-border: rgba(255, 255, 255, 0.6);  
+            --font-family: 'Microsoft YaHei', sans-serif;  
+            --danmaku-bg: rgba(255, 107, 107, 0.1);  
+            --danmaku-border: rgba(255, 107, 107, 0.3);  
+        }
+
+        /* 自定义背景色 */
+        body.theme-custom {  
+            --bg-gradient: var(--custom-bg-color);  
         }
 
         /* --- 基础样式重置 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }  
         
-        body {
-            font-family: var(--font-family);
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            overflow: hidden;
-            transition: background 0.5s ease;
+        body {  
+            font-family: var(--font-family);  
+            background: var(--bg-gradient);  
+            color: var(--text-primary);  
+            overflow: hidden;  
+            transition: background 0.5s ease;  
         }
 
         /* 动态类：应用CSS变量 */
-        .text-theme-primary { color: var(--text-primary) !important; text-shadow: 0 2px 4px var(--shadow-color); }
-        .text-theme-secondary { color: var(--text-secondary) !important; }
-        .bg-theme-sidebar { background: var(--sidebar-bg) !important; }
-        .border-theme { border-color: var(--accent-color) !important; }
-        .shadow-theme { text-shadow: 0 0 10px var(--shadow-color); }
+        .text-theme-primary { color: var(--text-primary) !important; text-shadow: 0 2px 4px var(--shadow-color); }  
+        .text-theme-secondary { color: var(--text-secondary) !important; }  
+        .bg-theme-sidebar { background: var(--sidebar-bg) !important; }  
+        .border-theme { border-color: var(--accent-color) !important; }  
+        .shadow-theme { text-shadow: 0 0 10px var(--shadow-color); }  
         
         /* 侧边栏过渡 */
-        .sidebar-transition {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+        .sidebar-transition {  
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;  
         }
         
-        .sidebar-left.hidden-sidebar { transform: translateX(-100%); }
-        .sidebar-right.hidden-sidebar { transform: translateX(100%); }
-        .stats-panel.hidden-stats { transform: translateY(100%); }
+        .sidebar-left.hidden-sidebar { transform: translateX(-100%); }  
+        .sidebar-right.hidden-sidebar { transform: translateX(100%); }  
+        .stats-panel.hidden-stats { transform: translateY(100%); }  
 
         /* 滚动动画 */
-        @keyframes roll {
-            0%, 100% { transform: translateY(-5px); }
-            50% { transform: translateY(5px); }
+        @keyframes roll {  
+            0%, 100% { transform: translateY(-5px); }  
+            50% { transform: translateY(5px); }  
         }
-        .rolling { animation: roll 0.1s infinite; }
+        .rolling { animation: roll 0.1s infinite; }  
 
         /* 中奖卡片 */
-        @keyframes winnerPop {
-            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
-            50% { transform: scale(1.05) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        @keyframes winnerPop {  
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }  
+            50% { transform: scale(1.05) rotate(2deg); }  
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }  
         }
         
-        .winner-card {
-            animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        .winner-card {  
+            animation: winnerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);  
+            background: var(--panel-bg);  
+            backdrop-filter: blur(10px);  
+            border: 1px solid var(--glass-border);  
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);  
         }
 
         /* 光荣榜 */
-        .glass-panel {
-            background: var(--panel-bg);
-            backdrop-filter: blur(15px);
-            border-left: 2px solid var(--accent-color);
-            box-shadow: -5px 0 25px rgba(0,0,0,0.3);
+        .glass-panel {  
+            background: var(--panel-bg);  
+            backdrop-filter: blur(15px);  
+            border-left: 2px solid var(--accent-color);  
+            box-shadow: -5px 0 25px rgba(0,0,0,0.3);  
         }
 
         /* 折叠内容 */
-        .round-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.3s ease-out;
+        .round-content {  
+            display: grid;  
+            grid-template-rows: 0fr;  
+            transition: grid-template-rows 0.3s ease-out;  
         }
-        .round-content.expanded { grid-template-rows: 1fr; }
-        .round-inner { overflow: hidden; }
-        .collapse-icon { transition: transform 0.3s ease; }
-        .collapse-icon.collapsed { transform: rotate(-90deg); }
+        .round-content.expanded { grid-template-rows: 1fr; }  
+        .round-inner { overflow: hidden; }  
+        .collapse-icon { transition: transform 0.3s ease; }  
+        .collapse-icon.collapsed { transform: rotate(-90deg); }  
 
         /* 烟花与金币 */
-        @keyframes firework {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        @keyframes firework {  
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }  
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }  
         }
-        .firework {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            animation: firework 1s ease-out forwards;
-            pointer-events: none;
-            z-index: 9999;
+        .firework {  
+            position: fixed;  
+            width: 6px;  
+            height: 6px;  
+            border-radius: 50%;  
+            animation: firework 1s ease-out forwards;  
+            pointer-events: none;  
+            z-index: 9999;  
         }
 
-        @keyframes coinFall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
+        @keyframes coinFall {  
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }  
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }  
         }
-        .coin {
-            position: fixed;
-            top: -50px;
-            font-size: 6rem; /* ← 这里改大一点，比如改成 3rem 或 4rem */
-            animation: coinFall linear forwards;
-            pointer-events: none;
-            z-index: 1;
+        .coin {  
+            position: fixed;  
+            top: -50px;  
+            font-size: 3rem;  
+            animation: coinFall linear forwards;  
+            pointer-events: none;  
+            z-index: 1;  
         }
 
         /* 按钮与输入框 */
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 var(--shadow-color); }
-            50% { box-shadow: 0 0 0 15px rgba(0,0,0,0); }
+        @keyframes pulse {  
+            0%, 100% { box-shadow: 0 0 0 0 var(--shadow-color); }  
+            50% { box-shadow: 0 0 0 15px rgba(0,0,0,0); }  
         }
-        .btn-pulse { animation: pulse 2s infinite; }
+        .btn-pulse { animation: pulse 2s infinite; }  
 
-        input[type="text"], input[type="number"], select {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid var(--accent-color) !important;
-            color: var(--text-primary) !important;
-            transition: all 0.3s;
+        input[type="text"], input[type="number"], input[type="color"], select {  
+            background: rgba(255, 255, 255, 0.1) !important;  
+            border: 1px solid var(--accent-color) !important;  
+            color: var(--text-primary) !important;  
+            transition: all 0.3s;  
         }
-        input:focus, select:focus {
-            outline: none;
-            box-shadow: 0 0 10px var(--shadow-color) !important;
-            background: rgba(255, 255, 255, 0.2) !important;
+        input:focus, select:focus {  
+            outline: none;  
+            box-shadow: 0 0 10px var(--shadow-color) !important;  
+            background: rgba(255, 255, 255, 0.2) !important;  
+        }
+
+        /* 颜色选择器特殊样式 */
+        input[type="color"] {  
+            height: 42px;  
+            cursor: pointer;  
+            border-radius: 0.75rem;  
         }
 
         /* 必填标记 */
-        .required-field::after {
-            content: '*';
-            color: #ff4444;
-            margin-left: 4px;
-            font-weight: bold;
+        .required-field::after {  
+            content: '*';  
+            color: #ff4444;  
+            margin-left: 4px;  
+            font-weight: bold;  
         }
 
         /* 滚动条 */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+        ::-webkit-scrollbar { width: 6px; }  
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }  
+        ::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }  
 
         /* 主按钮 */
-        .btn-main {
-            background: var(--btn-bg);
-            color: white;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s;
+        .btn-main {  
+            background: var(--btn-bg);  
+            color: white;  
+            position: relative;  
+            overflow: hidden;  
+            transition: transform 0.2s;  
         }
-        .btn-main:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .btn-main:hover { transform: scale(1.05); filter: brightness(1.1); }  
         
-        .theme-btn {
-            width: 1.8rem; height: 1.8rem; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        .theme-btn {  
+            width: 1.8rem; height: 1.8rem; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);  
         }
-        .theme-btn.active { transform: scale(1.2); border-color: var(--text-primary); }
+        .theme-btn.active { transform: scale(1.2); border-color: var(--text-primary); }  
 
         /* 统计面板 */
-        .stats-panel {
-            background: var(--sidebar-bg);
-            border-top: 2px solid var(--accent-color);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+        .stats-panel {  
+            background: var(--sidebar-bg);  
+            border-top: 2px solid var(--accent-color);  
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);  
+            position: relative;  
         }
 
         /* 浮动按钮 */
-        .float-btn {
-            position: fixed;
-            z-index: 100;
-            background: var(--sidebar-bg);
-            border: 1px solid var(--accent-color);
-            color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        .float-btn {  
+            position: fixed;  
+            z-index: 100;  
+            background: var(--sidebar-bg);  
+            border: 1px solid var(--accent-color);  
+            color: var(--text-primary);  
+            padding: 0.5rem;  
+            border-radius: 0.5rem;  
+            cursor: pointer;  
+            transition: all 0.3s;  
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);  
         }
 
         /* 人员标签样式 */
-        .person-tag {
-            display: inline-flex;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 0.5rem;
-            padding: 0.25rem 0.5rem;
-            margin: 0.2rem;
-            font-size: 0.75rem;
-            color: var(--text-primary);
-            transition: all 0.2s;
-            cursor: pointer;
+        .person-tag {  
+            display: inline-flex;  
+            align-items: center;  
+            background: var(--panel-bg);  
+            border: 1px solid var(--glass-border);  
+            border-radius: 0.5rem;  
+            padding: 0.25rem 0.5rem;  
+            margin: 0.2rem;  
+            font-size: 0.75rem;  
+            color: var(--text-primary);  
+            transition: all 0.2s;  
+            cursor: pointer;  
         }
         
-        .person-tag:hover {
-            transform: scale(1.05);
-            background: var(--accent-color);
-            color: white;
+        .person-tag:hover {  
+            transform: scale(1.05);  
+            background: var(--accent-color);  
+            color: white;  
         }
 
-        .pool-container {
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 0.5rem;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        .pool-container {  
+            background: var(--panel-bg);  
+            backdrop-filter: blur(10px);  
+            border: 1px solid var(--glass-border);  
+            border-radius: 0.5rem;  
+            height: 100%;  
+            display: flex;  
+            flex-direction: column;  
         }
 
-        .pool-header {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
+        .pool-header {  
+            padding: 0.75rem;  
+            border-bottom: 1px solid var(--glass-border);  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            flex-shrink: 0;  
         }
 
-        .pool-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0.5rem;
+        .pool-content {  
+            flex: 1;  
+            overflow-y: auto;  
+            padding: 0.5rem;  
         }
 
         /* 拖拽调整高度的手柄 */
-        .resize-handle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 8px;
-            cursor: ns-resize;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            transition: background 0.2s;
+        .resize-handle {  
+            position: absolute;  
+            top: 0;  
+            left: 0;  
+            right: 0;  
+            height: 8px;  
+            cursor: ns-resize;  
+            z-index: 100;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            background: transparent;  
+            transition: background 0.2s;  
         }
 
-        .resize-handle:hover {
-            background: var(--accent-color);
+        .resize-handle:hover {  
+            background: var(--accent-color);  
         }
 
-        .resize-handle::before {
-            content: '';
-            width: 60px;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 2px;
-            opacity: 0.5;
-            transition: opacity 0.2s;
+        .resize-handle::before {  
+            content: '';  
+            width: 60px;  
+            height: 4px;  
+            background: var(--accent-color);  
+            border-radius: 2px;  
+            opacity: 0.5;  
+            transition: opacity 0.2s;  
         }
 
-        .resize-handle:hover::before {
-            opacity: 1;
+        .resize-handle:hover::before {  
+            opacity: 1;  
         }
 
-        .resize-handle-icon {
-            position: absolute;
-            font-size: 10px;
-            color: var(--text-primary);
-            opacity: 0;
-            transition: opacity 0.2s;
+        .resize-handle-icon {  
+            position: absolute;  
+            font-size: 10px;  
+            color: var(--text-primary);  
+            opacity: 0;  
+            transition: opacity 0.2s;  
         }
 
-        .resize-handle:hover .resize-handle-icon {
-            opacity: 1;
+        .resize-handle:hover .resize-handle-icon {  
+            opacity: 1;  
         }
 
         /* 拖拽时的视觉反馈 */
-        .resizing {
-            user-select: none;
+        .resizing {  
+            user-select: none;  
         }
 
-        .resizing .stats-panel {
-            transition: none !important;
+        .resizing .stats-panel {  
+            transition: none !important;  
         }
 
         /* 赞助官标签样式 - 放大版本 */
-        .sponsor-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-top: 0.75rem;
-            margin-bottom: 0.5rem;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-            animation: sponsorGlow 2s ease-in-out infinite;
-            letter-spacing: 1px;
+        .sponsor-badge {  
+            display: inline-block;  
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  
+            color: white;  
+            padding: 0.5rem 1.5rem;  
+            border-radius: 2rem;  
+            font-size: 1.25rem;  
+            font-weight: bold;  
+            margin-top: 0.75rem;  
+            margin-bottom: 0.5rem;  
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);  
+            animation: sponsorGlow 2s ease-in-out infinite;  
+            letter-spacing: 1px;  
         }
 
-        @keyframes sponsorGlow {
+        @keyframes sponsorGlow {  
             0%, 100% { 
-                box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-                transform: scale(1);
+                box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);  
+                transform: scale(1);  
             }
             50% { 
-                box-shadow: 0 6px 24px rgba(102, 126, 234, 0.8);
-                transform: scale(1.02);
+                box-shadow: 0 6px 24px rgba(102, 126, 234, 0.8);  
+                transform: scale(1.02);  
             }
         }
 
         /* 文本截断 */
-        .line-clamp-1 {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .line-clamp-1 {  
+            display: -webkit-box;  
+            -webkit-line-clamp: 1;  
+            -webkit-box-orient: vertical;  
+            overflow: hidden;  
         }
         
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .line-clamp-2 {  
+            display: -webkit-box;  
+            -webkit-line-clamp: 2;  
+            -webkit-box-orient: vertical;  
+            overflow: hidden;  
         }
     </style>
-</head>
-<body class="h-screen flex flex-col">
+</head>  
+<body class="h-screen flex flex-col">  
 
     <!-- 主体布局 -->
-    <div class="flex-1 flex overflow-hidden relative">
+    <div class="flex-1 flex overflow-hidden relative">  
         <!-- 左侧控制面板 -->
-        <div id="left-sidebar" class="sidebar-left sidebar-transition bg-theme-sidebar flex flex-col overflow-y-auto absolute left-0 top-0 h-full z-50 w-72 lg:w-80">
-            <div class="p-4 lg:p-6 space-y-4 lg:space-y-6">
+        <div id="left-sidebar" class="sidebar-left sidebar-transition bg-theme-sidebar flex flex-col overflow-y-auto absolute left-0 top-0 h-full z-50 w-72 lg:w-80">  
+            <div class="p-4 lg:p-6 space-y-4 lg:space-y-6">  
                 <!-- 标题 -->
-                <div class="text-center border-b border-theme pb-3 lg:pb-4">
-                    <h2 class="text-2xl lg:text-3xl font-black text-theme-primary mb-1">🎉 控制台</h2>
-                    <div class="h-1 w-16 bg-theme mx-auto mt-2" style="background: var(--accent-color)"></div>
-                </div>
+                <div class="text-center border-b border-theme pb-3 lg:pb-4">  
+                    <h2 class="text-2xl lg:text-3xl font-black text-theme-primary mb-1">🎉 控制台</h2>  
+                    <div class="h-1 w-16 bg-theme mx-auto mt-2" style="background: var(--accent-color)"></div>  
+                </div>  
 
                 <!-- 主题切换 -->
-                <div class="space-y-2">
-                    <label class="block font-bold text-theme-secondary text-xs lg:text-sm">🎨 主题风格</label>
-                    <div class="flex gap-2 lg:gap-3 justify-center bg-black/20 p-2 lg:p-3 rounded-xl">
-                        <div class="theme-btn active" style="background: #c31432;" onclick="setTheme('default')" title="喜庆红"></div>
-                        <div class="theme-btn" style="background: #0f2027;" onclick="setTheme('theme-tech')" title="科技蓝"></div>
-                        <div class="theme-btn" style="background: #f5f7fa;" onclick="setTheme('theme-white')" title="简约白"></div>
-                        <div class="theme-btn" style="background: #000000;" onclick="setTheme('theme-dark')" title="暗黑金"></div>
-                        <div class="theme-btn" style="background: #ff9a9e;" onclick="setTheme('theme-pink')" title="浪漫粉"></div>
-                    </div>
-                </div>
+                <div class="space-y-2">  
+                    <label class="block font-bold text-theme-secondary text-xs lg:text-sm">🎨 主题风格</label>  
+                    <div class="flex gap-2 lg:gap-3 justify-center bg-black/20 p-2 lg:p-3 rounded-xl">  
+                        <div class="theme-btn active" style="background: #c31432;" onclick="setTheme('default')" title="喜庆红"></div>  
+                        <div class="theme-btn" style="background: #0f2027;" onclick="setTheme('theme-tech')" title="科技蓝"></div>  
+                        <div class="theme-btn" style="background: #f5f7fa;" onclick="setTheme('theme-white')" title="简约白"></div>  
+                        <div class="theme-btn" style="background: #000000;" onclick="setTheme('theme-dark')" title="暗黑金"></div>  
+                        <div class="theme-btn" style="background: #ff9a9e;" onclick="setTheme('theme-pink')" title="浪漫粉"></div>  
+                    </div>  
+                </div>  
+
+                <!-- 自定义背景色 -->
+                <div class="space-y-2">  
+                    <label class="block font-bold text-theme-secondary text-xs lg:text-sm">🖌️ 自定义背景</label>  
+                    <div class="flex gap-2">  
+                        <input type="color" id="custom-bg-color" value="#c31432"   
+                               class="flex-1 cursor-pointer"  
+                               onchange="applyCustomBackground(this.value)">  
+                        <button onclick="resetCustomBackground()"   
+                                class="bg-gray-600/80 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-xs transition-all">  
+                            重置  
+                        </button>  
+                    </div>  
+                </div>  
 
                 <!-- 名单导入 -->
-                <div class="space-y-2 lg:space-y-3">
-                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">📋 导入名单</label>
-                    <div class="bg-black/10 border border-theme rounded-lg p-2 lg:p-3 text-xs text-theme-secondary">
+                <div class="space-y-2 lg:space-y-3">  
+                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">📋 导入名单</label>  
+                    <div class="bg-black/10 border border-theme rounded-lg p-2 lg:p-3 text-xs text-theme-secondary">  
                         <p>💡 格式：部门：姓名 (每行一人)</p>
-                    </div>
-                    <label class="btn-main cursor-pointer block text-center py-2 lg:py-3 rounded-xl shadow-lg font-bold text-sm lg:text-base">
-                        <i class="fas fa-upload mr-2"></i> 选择TXT文件
-                        <input type="file" id="file-input" accept=".txt" class="hidden" onchange="loadNames(this)">
-                    </label>
-                    <div class="flex justify-between items-center px-1">
-                        <span id="file-status" class="text-gray-400 text-xs">未加载</span>
-                        <span class="text-theme-secondary text-sm">总数: <strong id="total-people" class="text-theme-primary text-lg">0</strong> 人</span>
-                    </div>
-                </div>
+                    </div>  
+                    <label class="btn-main cursor-pointer block text-center py-2 lg:py-3 rounded-xl shadow-lg font-bold text-sm lg:text-base">  
+                        <i class="fas fa-upload mr-2"></i> 选择TXT文件  
+                        <input type="file" id="file-input" accept=".txt" class="hidden" onchange="loadNames(this)">  
+                    </label>  
+                    <div class="flex justify-between items-center px-1">  
+                        <span id="file-status" class="text-gray-400 text-xs">未加载</span>  
+                        <span class="text-theme-secondary text-sm">总数: <strong id="total-people" class="text-theme-primary text-lg">0</strong> 人</span>  
+                    </div>  
+                </div>  
 
-                <div class="h-px bg-theme opacity-30" style="background: var(--accent-color)"></div>
+                <div class="h-px bg-theme opacity-30" style="background: var(--accent-color)"></div>  
 
                 <!-- 奖项配置 -->
-                <div class="space-y-3 lg:space-y-4">
-                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">🎁 奖品设置</label>
+                <div class="space-y-3 lg:space-y-4">  
+                    <label class="block font-bold text-theme-primary text-lg lg:text-xl">🎁 奖品设置</label>  
                     
                     <!-- 奖品名称 - 必填 -->
-                    <div class="relative">
-                        <label class="block text-theme-secondary text-xs mb-2 required-field">奖品名称</label>
-                        <input type="text" id="prize-name" placeholder="🏆 请输入奖项名称" required
-                               class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-base lg:text-lg">
-                    </div>
+                    <div class="relative">  
+                        <label class="block text-theme-secondary text-xs mb-2 required-field">奖品名称</label>  
+                        <input type="text" id="prize-name" placeholder="🏆 请输入奖项名称" required  
+                               class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-base lg:text-lg">  
+                    </div>  
                     
                     <!-- 梦想赞助官 - 必填 -->
-                    <div class="relative">
-                        <label class="block text-theme-secondary text-xs mb-2 required-field">梦想赞助官</label>
-                        <div class="relative">
-                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400">
-                                <i class="fas fa-hand-holding-heart"></i>
-                            </div>
-                            <input type="text" id="sponsor-name" placeholder="✨ 请输入赞助官姓名" required
-                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-sm lg:text-base pl-10">
-                        </div>
-                    </div>
+                    <div class="relative">  
+                        <label class="block text-theme-secondary text-xs mb-2 required-field">梦想赞助官</label>  
+                        <div class="relative">  
+                            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400">  
+                                <i class="fas fa-hand-holding-heart"></i>  
+                            </div>  
+                            <input type="text" id="sponsor-name" placeholder="✨ 请输入赞助官姓名" required  
+                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-sm lg:text-base pl-10">  
+                        </div>  
+                    </div>  
                     
-                    <div class="flex gap-2">
-                        <div class="flex-1">
-                            <label class="block text-theme-secondary text-xs mb-1">抽取人数</label>
-                            <input type="number" id="draw-count" value="1" min="1" 
-                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-lg lg:text-xl">
-                        </div>
-                        <div class="flex items-end">
-                            <label class="flex items-center bg-black/10 rounded-xl cursor-pointer hover:bg-black/20 transition border border-theme px-2 py-2 lg:px-3 lg:py-3 h-[46px] lg:h-[54px]">
-                                <input type="checkbox" id="allow-repeat" class="mr-2 accent-current w-4 h-4">
-                                <span class="text-theme-secondary font-bold text-xs lg:text-sm">可重复</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                    <div class="flex gap-2">  
+                        <div class="flex-1">  
+                            <label class="block text-theme-secondary text-xs mb-1">抽取人数</label>  
+                            <input type="number" id="draw-count" value="1" min="1"   
+                                   class="w-full rounded-xl font-bold text-center py-2 lg:py-3 text-lg lg:text-xl">  
+                        </div>  
+                        <div class="flex items-end">  
+                            <label class="flex items-center bg-black/10 rounded-xl cursor-pointer hover:bg-black/20 transition border border-theme px-2 py-2 lg:px-3 lg:py-3 h-[46px] lg:h-[54px]">  
+                                <input type="checkbox" id="allow-repeat" class="mr-2 accent-current w-4 h-4">  
+                                <span class="text-theme-secondary font-bold text-xs lg:text-sm">可重复</span>  
+                            </label>  
+                        </div>  
+                    </div>  
+                </div>  
 
                 <!-- 排除名单 -->
-                <details class="group bg-black/10 rounded-xl border border-theme">
-                    <summary class="flex justify-between items-center cursor-pointer list-none p-2 lg:p-3 text-theme-secondary font-bold text-sm">
+                <details class="group bg-black/10 rounded-xl border border-theme">  
+                    <summary class="flex justify-between items-center cursor-pointer list-none p-2 lg:p-3 text-theme-secondary font-bold text-sm">  
                         <span>🚫 排除设置</span>
-                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
-                    </summary>
-                    <div class="p-2 lg:p-3 pt-0 space-y-2">
-                         <label class="cursor-pointer bg-red-900/50 hover:bg-red-800/50 border border-red-500/50 text-red-200 text-xs py-2 rounded-lg text-center block transition-all">
+                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>  
+                    </summary>  
+                    <div class="p-2 lg:p-3 pt-0 space-y-2">  
+                         <label class="cursor-pointer bg-red-900/50 hover:bg-red-800/50 border border-red-500/50 text-red-200 text-xs py-2 rounded-lg text-center block transition-all">  
                             上传排除名单
-                            <input type="file" id="exclude-input" accept=".txt" class="hidden" onchange="loadExclude(this)">
-                        </label>
-                        <div id="exclude-status" class="text-xs text-gray-400 text-center">无排除</div>
-                        <label class="flex items-center justify-center cursor-pointer">
-                            <input type="checkbox" id="enable-exclude" class="mr-2" onchange="updatePoolDisplay();">
-                            <span class="text-xs text-theme-secondary">启用排除名单</span>
-                        </label>
-                    </div>
-                </details>
+                            <input type="file" id="exclude-input" accept=".txt" class="hidden" onchange="loadExclude(this)">  
+                        </label>  
+                        <div id="exclude-status" class="text-xs text-gray-400 text-center">无排除</div>  
+                        <label class="flex items-center justify-center cursor-pointer">  
+                            <input type="checkbox" id="enable-exclude" class="mr-2" onchange="updatePoolDisplay();">  
+                            <span class="text-xs text-theme-secondary">启用排除名单</span>  
+                        </label>  
+                    </div>  
+                </details>  
 
                 <!-- 导出按钮 -->
-                <button onclick="exportResults()" 
-                        class="w-full bg-green-600/80 hover:bg-green-600 text-white font-bold rounded-xl transition-all shadow-lg py-2 lg:py-3 mt-2 text-sm lg:text-base">
-                    <i class="fas fa-download mr-2"></i> 导出结果
-                </button>
-            </div>
-        </div>
+                <button onclick="exportResults()"   
+                        class="w-full bg-green-600/80 hover:bg-green-600 text-white font-bold rounded-xl transition-all shadow-lg py-2 lg:py-3 mt-2 text-sm lg:text-base">  
+                    <i class="fas fa-download mr-2"></i> 导出结果  
+                </button>  
+            </div>  
+        </div>  
 
         <!-- 侧边栏收起/展开按钮 -->
-        <button id="left-close-btn" onclick="toggleLeftSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 left-[16.5rem] lg:left-[18.5rem]">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button id="show-left-btn" onclick="toggleLeftSidebar()" class="float-btn hidden top-1/2 left-2 -translate-y-1/2">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        <button id="left-close-btn" onclick="toggleLeftSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 left-[16.5rem] lg:left-[18.5rem]">  
+            <i class="fas fa-chevron-left"></i>  
+        </button>  
+        <button id="show-left-btn" onclick="toggleLeftSidebar()" class="float-btn hidden top-1/2 left-2 -translate-y-1/2">  
+            <i class="fas fa-chevron-right"></i>  
+        </button>  
 
         <!-- 主舞台 -->
-        <div class="flex-1 flex flex-col p-2 lg:p-4 overflow-hidden relative min-w-0">
+        <div class="flex-1 flex flex-col p-2 lg:p-4 overflow-hidden relative min-w-0">  
             <!-- 清空按钮 -->
-            <button id="btn-clear" onclick="clearScreen()" 
-                    class="hidden absolute top-4 right-4 z-40 bg-gray-600/50 hover:bg-gray-600 text-white px-3 py-1 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm backdrop-blur-sm border border-white/20 transition-all">
-                <i class="fas fa-eraser mr-1"></i> 清空
-            </button>
+            <button id="btn-clear" onclick="clearScreen()"   
+                    class="hidden absolute top-4 right-4 z-40 bg-gray-600/50 hover:bg-gray-600 text-white px-3 py-1 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm backdrop-blur-sm border border-white/20 transition-all">  
+                <i class="fas fa-eraser mr-1"></i> 清空  
+            </button>  
 
             <!-- 标题区域 -->
-            <div class="text-center mb-2 lg:mb-6 mt-2 flex flex-col justify-center flex-shrink-0" style="min-height: 100px;">
-                <h1 id="display-prize" class="text-3xl md:text-5xl lg:text-6xl font-black text-theme-primary mb-1 drop-shadow-2xl transition-all leading-tight">
+            <div class="text-center mb-2 lg:mb-6 mt-2 flex flex-col justify-center flex-shrink-0" style="min-height: 100px;">  
+                <h1 id="display-prize" class="text-3xl md:text-5xl lg:text-6xl font-black text-theme-primary mb-1 drop-shadow-2xl transition-all leading-tight">  
                     🎁 准备抽奖
-                </h1>
+                </h1>  
                 <!-- 赞助官显示 - 放大版本 -->
-                <div id="display-sponsor" class="hidden">
-                    <span class="sponsor-badge">
-                        <i class="fas fa-hand-holding-heart mr-2"></i>
-                        梦想赞助官：<span id="sponsor-text"></span>
-                    </span>
-                </div>
-                <p class="text-base md:text-xl lg:text-2xl text-theme-secondary mt-2">
-                    本轮抽取 <span id="display-count" class="font-black text-theme-primary text-xl md:text-2xl">1</span> 人
-                </p>
-            </div>
+                <div id="display-sponsor" class="hidden">  
+                    <span class="sponsor-badge">  
+                        <i class="fas fa-hand-holding-heart mr-2"></i>  
+                        梦想赞助官：<span id="sponsor-text"></span>  
+                    </span>  
+                </div>  
+                <p class="text-base md:text-xl lg:text-2xl text-theme-secondary mt-2">  
+                    本轮抽取 <span id="display-count" class="font-black text-theme-primary text-xl md:text-2xl">1</span> 人  
+                </p>  
+            </div>  
 
             <!-- 控制按钮区域 -->
-            <div class="flex justify-center gap-4 mb-4 lg:mb-8 z-30 flex-shrink-0">
-                <button id="btn-start" onclick="start()" 
-                        class="btn-main btn-pulse text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">
-                    <i class="fas fa-play mr-2"></i> 开始
-                </button>
-                <button id="btn-stop" onclick="stop()" 
-                        class="hidden btn-main bg-red-600 text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">
-                    <i class="fas fa-stop mr-2"></i> 停止
-                </button>
-            </div>
+            <div class="flex justify-center gap-4 mb-4 lg:mb-8 z-30 flex-shrink-0">  
+                <button id="btn-start" onclick="start()"   
+                        class="btn-main btn-pulse text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">  
+                    <i class="fas fa-play mr-2"></i> 开始  
+                </button>  
+                <button id="btn-stop" onclick="stop()"   
+                        class="hidden btn-main bg-red-600 text-xl md:text-2xl lg:text-3xl font-black py-2 px-8 md:py-3 md:px-10 rounded-full shadow-2xl border-4 border-white/20">  
+                    <i class="fas fa-stop mr-2"></i> 停止  
+                </button>  
+            </div>  
 
             <!-- 滚动/结果展示区 -->
-            <div class="flex-1 flex items-center justify-center relative w-full overflow-hidden min-h-0">
+            <div class="flex-1 flex items-center justify-center relative w-full overflow-hidden min-h-0">  
                 <!-- 滚动名字 -->
-                <div id="rolling-area" class="text-center w-full px-4">
-                    <div id="rolling-name" class="font-black text-theme-primary rolling break-words" 
-                         style="font-size: clamp(2.5rem, 5vw, 6rem); line-height: 1.2;">
+                <div id="rolling-area" class="text-center w-full px-4">  
+                    <div id="rolling-name" class="font-black text-theme-primary rolling break-words"   
+                         style="font-size: clamp(2.5rem, 5vw, 6rem); line-height: 1.2;">  
                         准备就绪
-                    </div>
-                    <div id="rolling-dept" class="text-xl md:text-2xl text-theme-secondary mt-2 opacity-80"></div>
-                </div>
+                    </div>  
+                    <div id="rolling-dept" class="text-xl md:text-2xl text-theme-secondary mt-2 opacity-80"></div>  
+                </div>  
 
                 <!-- 中奖结果 - 居中网格布局 -->
-                <div id="result-area" class="hidden absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
-                    <div id="result-grid" class="w-full h-full flex items-center justify-center">
+                <div id="result-area" class="hidden absolute inset-0 flex items-center justify-center p-4 overflow-hidden">  
+                    <div id="result-grid" class="w-full h-full flex items-center justify-center">  
                         <!-- JS 动态插入卡片 -->
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </div>  
+                </div>  
+            </div>  
+        </div>  
 
         <!-- 右侧锦鲤册 -->
-        <div id="right-sidebar" class="sidebar-right sidebar-transition glass-panel flex flex-col absolute right-0 top-0 h-full z-50 w-72 lg:w-80">
-            <div class="bg-black/20 text-center border-b border-theme sticky top-0 z-10 p-3 lg:p-4">
-                <h3 class="text-theme-primary text-xl lg:text-2xl font-black">
-                    <i class="fas fa-fish mr-2"></i> 锦鲤册
-                </h3>
-            </div>
+        <div id="right-sidebar" class="sidebar-right sidebar-transition glass-panel flex flex-col absolute right-0 top-0 h-full z-50 w-72 lg:w-80">  
+            <div class="bg-black/20 text-center border-b border-theme sticky top-0 z-10 p-3 lg:p-4">  
+                <h3 class="text-theme-primary text-xl lg:text-2xl font-black">  
+                    <i class="fas fa-fish mr-2"></i> 锦鲤册  
+                </h3>  
+            </div>  
             
-            <div id="history-list" class="p-3 lg:p-4 space-y-3 overflow-y-auto flex-1">
-                <div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>
-            </div>
-        </div>
+            <div id="history-list" class="p-3 lg:p-4 space-y-3 overflow-y-auto flex-1">  
+                <div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>  
+            </div>  
+        </div>  
 
         <!-- 右侧收起按钮 -->
-        <button id="right-close-btn" onclick="toggleRightSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 right-[17.5rem] lg:right-[19.5rem]">
-            收起 <i class="fas fa-chevron-right"></i>
-        </button>
-        <button id="show-right-btn" onclick="toggleRightSidebar()" class="float-btn hidden top-1/2 right-2 -translate-y-1/2">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-    </div>
+        <button id="right-close-btn" onclick="toggleRightSidebar()" class="sidebar-close-btn fixed z-[60] text-white bg-red-600 hover:bg-red-700 px-2 py-1 rounded shadow-lg transition-all text-xs font-bold top-4 right-[17.5rem] lg:right-[19.5rem]">  
+            收起 <i class="fas fa-chevron-right"></i>  
+        </button>  
+        <button id="show-right-btn" onclick="toggleRightSidebar()" class="float-btn hidden top-1/2 right-2 -translate-y-1/2">  
+            <i class="fas fa-chevron-left"></i>  
+        </button>  
+    </div>  
 
     <!-- 底部奖池面板（可拖拽调整高度） -->
-    <div id="stats-panel" class="stats-panel flex-shrink-0 relative z-40" style="height: 300px;">
+    <div id="stats-panel" class="stats-panel flex-shrink-0 relative z-40" style="height: 300px;">  
         <!-- 拖拽手柄 -->
-        <div class="resize-handle" id="resize-handle">
-            <i class="fas fa-grip-lines resize-handle-icon"></i>
-        </div>
+        <div class="resize-handle" id="resize-handle">  
+            <i class="fas fa-grip-lines resize-handle-icon"></i>  
+        </div>  
         
-        <div class="px-3 py-2 lg:px-4 lg:py-3 h-full flex gap-3 pt-4">
+        <div class="px-3 py-2 lg:px-4 lg:py-3 h-full flex gap-3 pt-4">  
             <!-- 奖池人员 -->
-            <div class="flex-1 pool-container">
-                <div class="pool-header">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-users text-theme-primary"></i>
-                        <span class="font-bold text-theme-primary text-sm">奖池人员</span>
-                    </div>
-                    <span class="text-theme-secondary text-xs">
-                        共 <strong id="pool-count" class="text-theme-primary text-base">0</strong> 人
-                    </span>
-                </div>
-                <div id="pool-list" class="pool-content">
-                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无数据</div>
-                </div>
-            </div>
+            <div class="flex-1 pool-container">  
+                <div class="pool-header">  
+                    <div class="flex items-center gap-2">  
+                        <i class="fas fa-users text-theme-primary"></i>  
+                        <span class="font-bold text-theme-primary text-sm">奖池人员</span>  
+                    </div>  
+                    <span class="text-theme-secondary text-xs">  
+                        共 <strong id="pool-count" class="text-theme-primary text-base">0</strong> 人  
+                    </span>  
+                </div>  
+                <div id="pool-list" class="pool-content">  
+                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无数据</div>  
+                </div>  
+            </div>  
 
             <!-- 已中奖人员 -->
-            <div class="flex-1 pool-container">
-                <div class="pool-header">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-trophy text-theme-primary"></i>
-                        <span class="font-bold text-theme-primary text-sm">已中奖人员</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-theme-secondary text-xs">
-                            共 <strong id="winner-count" class="text-theme-primary text-base">0</strong> 人
-                        </span>
-                        <button onclick="resetAllWinners()" class="text-xs bg-orange-600/80 hover:bg-orange-600 text-white px-2 py-1 rounded transition-all" title="全部回池">
-                            <i class="fas fa-redo text-xs"></i>
-                        </button>
-                    </div>
-                </div>
-                <div id="winner-list" class="pool-content">
-                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="flex-1 pool-container">  
+                <div class="pool-header">  
+                    <div class="flex items-center gap-2">  
+                        <i class="fas fa-trophy text-theme-primary"></i>  
+                        <span class="font-bold text-theme-primary text-sm">已中奖人员</span>  
+                    </div>  
+                    <div class="flex items-center gap-2">  
+                        <span class="text-theme-secondary text-xs">  
+                            共 <strong id="winner-count" class="text-theme-primary text-base">0</strong> 人  
+                        </span>  
+                        <button onclick="resetAllWinners()" class="text-xs bg-orange-600/80 hover:bg-orange-600 text-white px-2 py-1 rounded transition-all" title="全部回池">  
+                            <i class="fas fa-redo text-xs"></i>  
+                        </button>  
+                    </div>  
+                </div>  
+                <div id="winner-list" class="pool-content">  
+                    <div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>  
+                </div>  
+            </div>  
+        </div>  
+    </div>  
 
-    <script>
+    <script>  
         // --- 核心逻辑 ---
         
-        let allPeople = [];
-        let excludePeople = [];
-        let roundHistory = []; 
-        let currentRound = 0;
-        let isRolling = false;
-        let timer = null;
-        let leftSidebarVisible = true;
-        let rightSidebarVisible = true;
-        let statsPanelVisible = true;
+        let allPeople = [];  
+        let excludePeople = [];  
+        let roundHistory = [];   
+        let currentRound = 0;  
+        let isRolling = false;  
+        let timer = null;  
+        let leftSidebarVisible = true;  
+        let rightSidebarVisible = true;  
+        let statsPanelVisible = true;  
+        let currentTheme = 'default';
 
-        const $ = (id) => document.getElementById(id);
+        const $ = (id) => document.getElementById(id);  
+
+        // --- 自定义背景色功能 ---
+        function applyCustomBackground(color) {  
+            document.documentElement.style.setProperty('--custom-bg-color', `linear-gradient(135deg, ${color} 0%, ${adjustBrightness(color, -20)} 50%, ${adjustBrightness(color, 20)} 100%)`);  
+            document.body.className = "h-screen flex flex-col theme-custom";  
+            currentTheme = 'theme-custom';
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));  
+        }
+
+        function resetCustomBackground() {  
+            setTheme('default');  
+            $('custom-bg-color').value = '#c31432';  
+        }
+
+        // 辅助函数：调整颜色亮度
+        function adjustBrightness(color, percent) {  
+            const num = parseInt(color.replace("#",""), 16);  
+            const amt = Math.round(2.55 * percent);  
+            const R = (num >> 16) + amt;  
+            const G = (num >> 8 & 0x00FF) + amt;  
+            const B = (num & 0x0000FF) + amt;  
+            return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +   
+                (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255))  
+                .toString(16).slice(1);  
+        }
 
         // --- 拖拽调整高度功能 ---
-        let isResizing = false;
-        let startY = 0;
-        let startHeight = 0;
-        const minHeight = 150;
-        const maxHeight = window.innerHeight * 0.6;
+        let isResizing = false;  
+        let startY = 0;  
+        let startHeight = 0;  
+        const minHeight = 150;  
+        const maxHeight = window.innerHeight * 0.6;  
 
-        const resizeHandle = $('resize-handle');
-        const statsPanel = $('stats-panel');
+        const resizeHandle = $('resize-handle');  
+        const statsPanel = $('stats-panel');  
 
-        resizeHandle.addEventListener('mousedown', function(e) {
-            isResizing = true;
-            startY = e.clientY;
-            startHeight = statsPanel.offsetHeight;
-            document.body.classList.add('resizing');
-            e.preventDefault();
+        resizeHandle.addEventListener('mousedown', function(e) {  
+            isResizing = true;  
+            startY = e.clientY;  
+            startHeight = statsPanel.offsetHeight;  
+            document.body.classList.add('resizing');  
+            e.preventDefault();  
         });
 
-        document.addEventListener('mousemove', function(e) {
-            if (!isResizing) return;
+        document.addEventListener('mousemove', function(e) {  
+            if (!isResizing) return;  
             
-            const deltaY = startY - e.clientY;
-            const newHeight = Math.min(Math.max(startHeight + deltaY, minHeight), maxHeight);
-            statsPanel.style.height = newHeight + 'px';
+            const deltaY = startY - e.clientY;  
+            const newHeight = Math.min(Math.max(startHeight + deltaY, minHeight), maxHeight);  
+            statsPanel.style.height = newHeight + 'px';  
         });
 
-        document.addEventListener('mouseup', function() {
-            if (isResizing) {
-                isResizing = false;
-                document.body.classList.remove('resizing');
+        document.addEventListener('mouseup', function() {  
+            if (isResizing) {  
+                isResizing = false;  
+                document.body.classList.remove('resizing');  
             }
         });
 
-        resizeHandle.addEventListener('dblclick', function() {
-            statsPanel.style.height = '300px';
+        resizeHandle.addEventListener('dblclick', function() {  
+            statsPanel.style.height = '300px';  
         });
 
-        function setTheme(themeName) {
-            document.body.className = "h-screen flex flex-col " + (themeName === 'default' ? '' : themeName);
-            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+        function setTheme(themeName) {  
+            document.body.className = "h-screen flex flex-col " + (themeName === 'default' ? '' : themeName);  
+            currentTheme = themeName;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));  
+            event.currentTarget.classList.add('active');  
         }
 
-        function parsePerson(line) {
-            line = line.trim();
-            if (!line) return null;
-            if (line.includes('：') || line.includes(':')) {
-                const separator = line.includes('：') ? '：' : ':';
-                const parts = line.split(separator);
-                return { fullText: line, dept: parts[0].trim(), name: parts.slice(1).join(separator).trim() };
-            } else {
-                return { fullText: line, dept: '', name: line };
-            }
-        }
-
-        function toggleLeftSidebar() {
-            leftSidebarVisible = !leftSidebarVisible;
-            const sidebar = $('left-sidebar');
-            const closeBtn = $('left-close-btn');
-            const showBtn = $('show-left-btn');
-            
-            if (leftSidebarVisible) {
-                sidebar.classList.remove('hidden-sidebar');
-                closeBtn.style.display = 'block';
-                showBtn.classList.add('hidden');
-            } else {
-                sidebar.classList.add('hidden-sidebar');
-                closeBtn.style.display = 'none';
-                showBtn.classList.remove('hidden');
+        function parsePerson(line) {  
+            line = line.trim();  
+            if (!line) return null;  
+            if (line.includes('：') || line.includes(':')) {  
+                const separator = line.includes('：') ? '：' : ':';  
+                const parts = line.split(separator);  
+                return { fullText: line, dept: parts[0].trim(), name: parts.slice(1).join(separator).trim() };  
+            } else {  
+                return { fullText: line, dept: '', name: line };  
             }
         }
 
-        function toggleRightSidebar() {
-            rightSidebarVisible = !rightSidebarVisible;
-            const sidebar = $('right-sidebar');
-            const closeBtn = $('right-close-btn');
-            const showBtn = $('show-right-btn');
+        function toggleLeftSidebar() {  
+            leftSidebarVisible = !leftSidebarVisible;  
+            const sidebar = $('left-sidebar');  
+            const closeBtn = $('left-close-btn');  
+            const showBtn = $('show-left-btn');  
             
-            if (rightSidebarVisible) {
-                sidebar.classList.remove('hidden-sidebar');
-                closeBtn.style.display = 'block';
-                showBtn.classList.add('hidden');
-            } else {
-                sidebar.classList.add('hidden-sidebar');
-                closeBtn.style.display = 'none';
-                showBtn.classList.remove('hidden');
+            if (leftSidebarVisible) {  
+                sidebar.classList.remove('hidden-sidebar');  
+                closeBtn.style.display = 'block';  
+                showBtn.classList.add('hidden');  
+            } else {  
+                sidebar.classList.add('hidden-sidebar');  
+                closeBtn.style.display = 'none';  
+                showBtn.classList.remove('hidden');  
             }
         }
 
-        function hideAllPanels() {
-            if (leftSidebarVisible) {
-                leftSidebarVisible = false;
-                $('left-sidebar').classList.add('hidden-sidebar');
-                $('left-close-btn').style.display = 'none';
-                $('show-left-btn').classList.remove('hidden');
-            }
+        function toggleRightSidebar() {  
+            rightSidebarVisible = !rightSidebarVisible;  
+            const sidebar = $('right-sidebar');  
+            const closeBtn = $('right-close-btn');  
+            const showBtn = $('show-right-btn');  
             
-            if (rightSidebarVisible) {
-                rightSidebarVisible = false;
-                $('right-sidebar').classList.add('hidden-sidebar');
-                $('right-close-btn').style.display = 'none';
-                $('show-right-btn').classList.remove('hidden');
-            }
-            
-            if (statsPanelVisible) {
-                statsPanelVisible = false;
-                $('stats-panel').classList.add('hidden-stats');
+            if (rightSidebarVisible) {  
+                sidebar.classList.remove('hidden-sidebar');  
+                closeBtn.style.display = 'block';  
+                showBtn.classList.add('hidden');  
+            } else {  
+                sidebar.classList.add('hidden-sidebar');  
+                closeBtn.style.display = 'none';  
+                showBtn.classList.remove('hidden');  
             }
         }
 
-        function showAllPanels() {
-            if (!leftSidebarVisible) {
-                leftSidebarVisible = true;
-                $('left-sidebar').classList.remove('hidden-sidebar');
-                $('left-close-btn').style.display = 'block';
-                $('show-left-btn').classList.add('hidden');
+        function hideAllPanels() {  
+            if (leftSidebarVisible) {  
+                leftSidebarVisible = false;  
+                $('left-sidebar').classList.add('hidden-sidebar');  
+                $('left-close-btn').style.display = 'none';  
+                $('show-left-btn').classList.remove('hidden');  
             }
             
-            if (!rightSidebarVisible) {
-                rightSidebarVisible = true;
-                $('right-sidebar').classList.remove('hidden-sidebar');
-                $('right-close-btn').style.display = 'block';
-                $('show-right-btn').classList.add('hidden');
+            if (rightSidebarVisible) {  
+                rightSidebarVisible = false;  
+                $('right-sidebar').classList.add('hidden-sidebar');  
+                $('right-close-btn').style.display = 'none';  
+                $('show-right-btn').classList.remove('hidden');  
             }
             
-            if (!statsPanelVisible) {
-                statsPanelVisible = true;
-                $('stats-panel').classList.remove('hidden-stats');
+            if (statsPanelVisible) {  
+                statsPanelVisible = false;  
+                $('stats-panel').classList.add('hidden-stats');  
             }
         }
 
-        function loadNames(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const lines = e.target.result.split(/\r?\n/);
-                allPeople = lines.map(parsePerson).filter(p => p !== null);
-                const uniqueMap = new Map();
-                allPeople.forEach(p => uniqueMap.set(p.fullText, p));
-                allPeople = Array.from(uniqueMap.values());
+        function showAllPanels() {  
+            if (!leftSidebarVisible) {  
+                leftSidebarVisible = true;  
+                $('left-sidebar').classList.remove('hidden-sidebar');  
+                $('left-close-btn').style.display = 'block';  
+                $('show-left-btn').classList.add('hidden');  
+            }
+            
+            if (!rightSidebarVisible) {  
+                rightSidebarVisible = true;  
+                $('right-sidebar').classList.remove('hidden-sidebar');  
+                $('right-close-btn').style.display = 'block';  
+                $('show-right-btn').classList.add('hidden');  
+            }
+            
+            if (!statsPanelVisible) {  
+                statsPanelVisible = true;  
+                $('stats-panel').classList.remove('hidden-stats');  
+            }
+        }
+
+        function loadNames(input) {  
+            const file = input.files[0];  
+            if (!file) return;  
+            const reader = new FileReader();  
+            reader.onload = (e) => {  
+                const lines = e.target.result.split(/\r?\n/);  
+                allPeople = lines.map(parsePerson).filter(p => p !== null);  
+                const uniqueMap = new Map();  
+                allPeople.forEach(p => uniqueMap.set(p.fullText, p));  
+                allPeople = Array.from(uniqueMap.values());  
                 
-                $('file-status').innerHTML = `<span class="text-green-400 font-bold">✓ ${allPeople.length} 人</span>`;
-                $('total-people').textContent = allPeople.length;
-                updatePoolDisplay();
-                celebrate();
+                $('file-status').innerHTML = `<span class="text-green-400 font-bold">✓ ${allPeople.length} 人</span>`;  
+                $('total-people').textContent = allPeople.length;  
+                updatePoolDisplay();  
+                celebrate();  
             };
-            reader.readAsText(file);
+            reader.readAsText(file);  
         }
 
-        function loadExclude(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const lines = e.target.result.split(/\r?\n/);
-                excludePeople = lines.map(parsePerson).filter(p => p !== null);
-                const uniqueMap = new Map();
-                excludePeople.forEach(p => uniqueMap.set(p.fullText, p));
-                excludePeople = Array.from(uniqueMap.values());
-                $('exclude-status').innerHTML = `<span class="text-red-400">已上传 ${excludePeople.length} 人</span>`;
-                if ($('enable-exclude').checked) {
-                    updatePoolDisplay();
+        function loadExclude(input) {  
+            const file = input.files[0];  
+            if (!file) return;  
+            const reader = new FileReader();  
+            reader.onload = (e) => {  
+                const lines = e.target.result.split(/\r?\n/);  
+                excludePeople = lines.map(parsePerson).filter(p => p !== null);  
+                const uniqueMap = new Map();  
+                excludePeople.forEach(p => uniqueMap.set(p.fullText, p));  
+                excludePeople = Array.from(uniqueMap.values());  
+                $('exclude-status').innerHTML = `<span class="text-red-400">已上传 ${excludePeople.length} 人</span>`;  
+                if ($('enable-exclude').checked) {  
+                    updatePoolDisplay();  
                 }
             };
-            reader.readAsText(file);
+            reader.readAsText(file);  
         }
 
-        function getAllWinners() {
-            const allWinners = [];
-            roundHistory.forEach(round => {
-                allWinners.push(...round.winners);
+        function getAllWinners() {  
+            const allWinners = [];  
+            roundHistory.forEach(round => {  
+                allWinners.push(...round.winners);  
             });
-            const uniqueMap = new Map();
-            allWinners.forEach(w => uniqueMap.set(w.fullText, w));
-            return Array.from(uniqueMap.values());
+            const uniqueMap = new Map();  
+            allWinners.forEach(w => uniqueMap.set(w.fullText, w));  
+            return Array.from(uniqueMap.values());  
         }
 
-        function getCurrentPool() {
-            const allowRepeat = $('allow-repeat').checked;
-            const enableExclude = $('enable-exclude').checked;
-            let pool = [...allPeople];
+        function getCurrentPool() {  
+            const allowRepeat = $('allow-repeat').checked;  
+            const enableExclude = $('enable-exclude').checked;  
+            let pool = [...allPeople];  
             
-            if (enableExclude && excludePeople.length > 0) {
-                const excludeTexts = excludePeople.map(p => p.fullText);
-                pool = pool.filter(p => !excludeTexts.includes(p.fullText));
+            if (enableExclude && excludePeople.length > 0) {  
+                const excludeTexts = excludePeople.map(p => p.fullText);  
+                pool = pool.filter(p => !excludeTexts.includes(p.fullText));  
             }
             
-            if (!allowRepeat) {
-                const winnerTexts = getAllWinners().map(w => w.fullText);
-                pool = pool.filter(p => !winnerTexts.includes(p.fullText));
+            if (!allowRepeat) {  
+                const winnerTexts = getAllWinners().map(w => w.fullText);  
+                pool = pool.filter(p => !winnerTexts.includes(p.fullText));  
             }
             
-            return pool;
+            return pool;  
         }
 
-        function updatePoolDisplay() {
-            const pool = getCurrentPool();
-            const winners = getAllWinners();
+        function updatePoolDisplay() {  
+            const pool = getCurrentPool();  
+            const winners = getAllWinners();  
             
-            const poolList = $('pool-list');
-            if (pool.length === 0) {
-                poolList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">奖池已空</div>';
-            } else {
-                poolList.innerHTML = pool.map(p => 
-                    `<span class="person-tag" title="${p.dept || '无部门'}">
-                        ${p.name}
-                    </span>`
-                ).join('');
+            const poolList = $('pool-list');  
+            if (pool.length === 0) {  
+                poolList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">奖池已空</div>';  
+            } else {  
+                poolList.innerHTML = pool.map(p =>   
+                    `<span class="person-tag" title="${p.dept || '无部门'}">  
+                        ${p.name}  
+                    </span>`  
+                ).join('');  
             }
-            $('pool-count').textContent = pool.length;
+            $('pool-count').textContent = pool.length;  
             
-            const winnerList = $('winner-list');
-            if (winners.length === 0) {
-                winnerList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>';
-            } else {
-                winnerList.innerHTML = winners.map(w => 
-                    `<span class="person-tag" title="${w.dept || '无部门'} - 点击回池" onclick="returnToPool('${w.fullText.replace(/'/g, "\\'")}')">
-                        ${w.name} <i class="fas fa-undo ml-1 text-xs"></i>
-                    </span>`
-                ).join('');
+            const winnerList = $('winner-list');  
+            if (winners.length === 0) {  
+                winnerList.innerHTML = '<div class="text-center text-theme-secondary text-xs opacity-50 mt-4">暂无中奖</div>';  
+            } else {  
+                winnerList.innerHTML = winners.map(w =>   
+                    `<span class="person-tag" title="${w.dept || '无部门'} - 点击回池" onclick="returnToPool('${w.fullText.replace(/'/g, "\\'")}')">  
+                        ${w.name} <i class="fas fa-undo ml-1 text-xs"></i>  
+                    </span>`  
+                ).join('');  
             }
-            $('winner-count').textContent = winners.length;
+            $('winner-count').textContent = winners.length;  
         }
 
-        function returnToPool(fullText) {
+        function returnToPool(fullText) {  
             if (!confirm(`确定将 ${fullText.split(/：|:/)[1] || fullText} 放回奖池吗？\n\n此操作将删除该人员的所有中奖记录！`)) {
-                return;
+                return;  
             }
             
-            roundHistory.forEach(round => {
-                round.winners = round.winners.filter(w => w.fullText !== fullText);
+            roundHistory.forEach(round => {  
+                round.winners = round.winners.filter(w => w.fullText !== fullText);  
             });
             
-            roundHistory = roundHistory.filter(round => round.winners.length > 0);
+            roundHistory = roundHistory.filter(round => round.winners.length > 0);  
             
-            updatePoolDisplay();
-            updateHistory();
-            celebrate();
+            updatePoolDisplay();  
+            updateHistory();  
+            celebrate();  
         }
 
-        function resetAllWinners() {
-            if (getAllWinners().length === 0) {
+        function resetAllWinners() {  
+            if (getAllWinners().length === 0) {  
                 alert('❌ 当前没有中奖人员！');
-                return;
+                return;  
             }
             
             if (!confirm('⚠️ 确定要将所有中奖人员放回奖池吗？\n\n此操作将清空所有中奖记录！')) {
-                return;
+                return;  
             }
             
-            roundHistory = [];
-            currentRound = 0;
-            updatePoolDisplay();
-            updateHistory();
-            celebrate();
+            roundHistory = [];  
+            currentRound = 0;  
+            updatePoolDisplay();  
+            updateHistory();  
+            celebrate();  
         }
 
         // 监听奖品名称和赞助官输入
-        $('prize-name').addEventListener('input', (e) => {
-            $('display-prize').textContent = e.target.value || '🎁 准备抽奖';
+        $('prize-name').addEventListener('input', (e) => {  
+            $('display-prize').textContent = e.target.value || '🎁 准备抽奖';  
         });
 
-        $('sponsor-name').addEventListener('input', (e) => {
-            const sponsor = e.target.value.trim();
-            if (sponsor) {
-                $('display-sponsor').classList.remove('hidden');
-                $('sponsor-text').textContent = sponsor;
-            } else {
-                $('display-sponsor').classList.add('hidden');
+        $('sponsor-name').addEventListener('input', (e) => {  
+            const sponsor = e.target.value.trim();  
+            if (sponsor) {  
+                $('display-sponsor').classList.remove('hidden');  
+                $('sponsor-text').textContent = sponsor;  
+            } else {  
+                $('display-sponsor').classList.add('hidden');  
             }
         });
 
-        $('draw-count').addEventListener('input', (e) => $('display-count').textContent = e.target.value || 1);
-        $('allow-repeat').addEventListener('change', () => { updatePoolDisplay(); });
+        $('draw-count').addEventListener('input', (e) => $('display-count').textContent = e.target.value || 1);  
+        $('allow-repeat').addEventListener('change', () => { updatePoolDisplay(); });  
 
-        function start() {
+        function start() {  
             if (allPeople.length === 0) return alert('❌ 请先导入人员名单！');
             
             // 验证奖品名称必填
-            const prizeName = $('prize-name').value.trim();
-            if (!prizeName) {
+            const prizeName = $('prize-name').value.trim();  
+            if (!prizeName) {  
                 alert('❌ 请填写奖品名称！');
-                $('prize-name').focus();
-                return;
+                $('prize-name').focus();  
+                return;  
             }
             
             // 验证赞助官必填
-            const sponsor = $('sponsor-name').value.trim();
-            if (!sponsor) {
+            const sponsor = $('sponsor-name').value.trim();  
+            if (!sponsor) {  
                 alert('❌ 请填写梦想赞助官！');
-                $('sponsor-name').focus();
-                return;
+                $('sponsor-name').focus();  
+                return;  
             }
             
-            const count = parseInt($('draw-count').value) || 1;
-            const pool = getCurrentPool();
+            const count = parseInt($('draw-count').value) || 1;  
+            const pool = getCurrentPool();  
             
             if (pool.length < count) return alert(`❌ 可用人数不足！\n需要: ${count} 人\n剩余: ${pool.length} 人`);
 
-            isRolling = true;
-            $('btn-start').classList.add('hidden');
-            $('btn-stop').classList.remove('hidden');
-            $('btn-clear').classList.add('hidden');
-            $('result-area').classList.add('hidden');
-            $('rolling-area').classList.remove('hidden');
+            isRolling = true;  
+            $('btn-start').classList.add('hidden');  
+            $('btn-stop').classList.remove('hidden');  
+            $('btn-clear').classList.add('hidden');  
+            $('result-area').classList.add('hidden');  
+            $('rolling-area').classList.remove('hidden');  
             
-            hideAllPanels();
-            createCoins();
+            hideAllPanels();  
+            createCoins();  
 
-            timer = setInterval(() => {
-                const person = pool[Math.floor(Math.random() * pool.length)];
-                $('rolling-name').textContent = person.name;
-                $('rolling-dept').textContent = person.dept || '';
+            timer = setInterval(() => {  
+                const person = pool[Math.floor(Math.random() * pool.length)];  
+                $('rolling-name').textContent = person.name;  
+                $('rolling-dept').textContent = person.dept || '';  
             }, 50);
         }
 
-        function stop() {
-            clearInterval(timer);
-            isRolling = false;
+        function stop() {  
+            clearInterval(timer);  
+            isRolling = false;  
 
-            const count = parseInt($('draw-count').value) || 1;
-            const prize = $('prize-name').value.trim() || '幸运奖';
-            const sponsor = $('sponsor-name').value.trim() || '';
-            let pool = getCurrentPool();
+            const count = parseInt($('draw-count').value) || 1;  
+            const prize = $('prize-name').value.trim() || '幸运奖';  
+            const sponsor = $('sponsor-name').value.trim() || '';  
+            let pool = getCurrentPool();  
             
-            const shuffled = pool.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, count);
+            const shuffled = pool.sort(() => 0.5 - Math.random());  
+            const selected = shuffled.slice(0, count);  
 
-            const now = new Date().toLocaleString('zh-CN', { hour12: false });
-            currentRound++;
+            const now = new Date().toLocaleString('zh-CN', { hour12: false });  
+            currentRound++;  
 
-            roundHistory.push({ 
-                round: currentRound, 
-                prize: prize, 
-                sponsor: sponsor,
-                count: count, 
-                winners: selected, 
-                time: now 
+            roundHistory.push({   
+                round: currentRound,   
+                prize: prize,   
+                sponsor: sponsor,  
+                count: count,   
+                winners: selected,   
+                time: now   
             });
 
-            showWinners(selected, prize);
-            updateHistory();
-            updatePoolDisplay();
-            fireworks();
+            showWinners(selected, prize);  
+            updateHistory();  
+            updatePoolDisplay();  
+            fireworks();  
 
-            $('btn-stop').classList.add('hidden');
-            $('btn-start').classList.remove('hidden');
-            $('btn-clear').classList.remove('hidden');
+            $('btn-stop').classList.add('hidden');  
+            $('btn-start').classList.remove('hidden');  
+            $('btn-clear').classList.remove('hidden');  
         }
 
         /**
-         * 智能自适应布局算法
-         * 根据人数和屏幕尺寸自动计算最佳列数和卡片大小
+         * ⭐ 超级智能自适应布局算法 ⭐
+         * 特点：
+         * 1. 无论多少人都能完美适配屏幕
+         * 2. 字体尽可能大
+         * 3. 自动计算最优列数和行数
+         * 4. 动态调整卡片尺寸和间距
          */
-        function calculateOptimalLayout(count) {
-            // 获取可用屏幕宽度（85%屏幕宽度用于显示）
-            const availableWidth = window.innerWidth * 0.85;
+        function calculateOptimalLayout(count) {  
+            // 获取可用显示区域（扣除padding）
+            const containerWidth = window.innerWidth * 0.9;  // 90%屏幕宽度
+            const containerHeight = window.innerHeight * 0.55; // 55%屏幕高度
             
-            let cols, cardSize, nameSize, deptSize, gap, padding;
+            let cols, rows, cardWidth, cardHeight, fontSize, deptSize, gap;
             
-            // 特殊情况：1-9人固定布局
-            if (count === 1) {
-                return { cols: 1, cardSize: 400, nameSize: 'text-7xl', deptSize: 'text-3xl', gap: '0', padding: 4 };
-            } else if (count === 2) {
-                return { cols: 2, cardSize: 340, nameSize: 'text-5xl', deptSize: 'text-2xl', gap: '2rem', padding: 4 };
-            } else if (count <= 4) {
-                return { cols: 2, cardSize: 300, nameSize: 'text-4xl', deptSize: 'text-xl', gap: '1.75rem', padding: 4 };
-            } else if (count <= 6) {
-                return { cols: 3, cardSize: 260, nameSize: 'text-3xl', deptSize: 'text-lg', gap: '1.5rem', padding: 4 };
-            } else if (count <= 9) {
-                return { cols: 3, cardSize: 240, nameSize: 'text-2xl', deptSize: 'text-base', gap: '1.5rem', padding: 3 };
+            // 🎯 特殊优化：1-9人固定最佳布局
+            if (count === 1) {  
+                return {   
+                    cols: 1,   
+                    cardWidth: Math.min(500, containerWidth * 0.8),   
+                    cardHeight: Math.min(400, containerHeight * 0.8),  
+                    fontSize: 'clamp(3rem, 8vw, 7rem)',   
+                    deptSize: 'clamp(1.5rem, 3vw, 3rem)',   
+                    gap: '0'   
+                };  
             }
             
-            // 10人以上：智能计算
-            // 计算最优列数（目标：接近正方形网格，略微偏宽）
-            const optimalCols = Math.ceil(Math.sqrt(count * 1.3));
+            if (count === 2) {  
+                return {   
+                    cols: 2,   
+                    cardWidth: Math.min(400, containerWidth * 0.4),   
+                    cardHeight: Math.min(350, containerHeight * 0.7),  
+                    fontSize: 'clamp(2.5rem, 6vw, 5rem)',   
+                    deptSize: 'clamp(1.2rem, 2.5vw, 2.5rem)',   
+                    gap: '2rem'   
+                };  
+            }
             
-            // 根据列数和可用宽度计算卡片大小
-            const gapSize = Math.max(12, 24 - optimalCols * 1.5); // 列数越多，间距越小
-            const totalGapWidth = gapSize * (optimalCols - 1);
-            let calculatedCardSize = (availableWidth - totalGapWidth) / optimalCols;
+            if (count <= 4) {  
+                return {   
+                    cols: 2,   
+                    cardWidth: Math.min(350, containerWidth * 0.42),   
+                    cardHeight: Math.min(300, containerHeight * 0.45),  
+                    fontSize: 'clamp(2rem, 5vw, 4rem)',   
+                    deptSize: 'clamp(1rem, 2vw, 2rem)',   
+                    gap: '1.5rem'   
+                };  
+            }
             
-            // 限制卡片大小范围
-            const minCardSize = 100;
-            const maxCardSize = 200;
-            calculatedCardSize = Math.max(minCardSize, Math.min(maxCardSize, calculatedCardSize));
+            if (count <= 6) {  
+                return {   
+                    cols: 3,   
+                    cardWidth: Math.min(280, containerWidth * 0.28),   
+                    cardHeight: Math.min(250, containerHeight * 0.42),  
+                    fontSize: 'clamp(1.8rem, 4vw, 3.5rem)',   
+                    deptSize: 'clamp(0.9rem, 1.8vw, 1.5rem)',   
+                    gap: '1.2rem'   
+                };  
+            }
             
-            // 根据卡片大小动态调整字号
-            if (calculatedCardSize >= 180) {
-                nameSize = 'text-xl';
-                deptSize = 'text-sm';
-                padding = 3;
-            } else if (calculatedCardSize >= 150) {
-                nameSize = 'text-lg';
-                deptSize = 'text-xs';
-                padding = 3;
-            } else if (calculatedCardSize >= 120) {
-                nameSize = 'text-base';
-                deptSize = 'text-xs';
-                padding = 2;
+            if (count <= 9) {  
+                return {   
+                    cols: 3,   
+                    cardWidth: Math.min(250, containerWidth * 0.28),   
+                    cardHeight: Math.min(220, containerHeight * 0.3),  
+                    fontSize: 'clamp(1.5rem, 3.5vw, 3rem)',   
+                    deptSize: 'clamp(0.8rem, 1.5vw, 1.2rem)',   
+                    gap: '1rem'   
+                };  
+            }
+            
+            // 🚀 10人以上：超级智能算法
+            // Step 1: 计算理想宽高比（1.2:1 黄金比例）
+            const idealRatio = 1.2;
+            cols = Math.ceil(Math.sqrt(count * idealRatio));
+            rows = Math.ceil(count / cols);
+            
+            // Step 2: 尝试优化行列，减少空白
+            const alternatives = [
+                { cols: cols, rows: rows },
+                { cols: cols - 1, rows: Math.ceil(count / (cols - 1)) },
+                { cols: cols + 1, rows: Math.ceil(count / (cols + 1)) }
+            ];
+            
+            let bestLayout = alternatives[0];
+            let minWaste = Infinity;
+            
+            alternatives.forEach(layout => {
+                if (layout.cols < 2) return;
+                const waste = (layout.cols * layout.rows - count) / count;
+                const aspectRatio = layout.cols / layout.rows;
+                const ratioScore = Math.abs(aspectRatio - idealRatio);
+                const totalScore = waste + ratioScore * 0.5;
+                
+                if (totalScore < minWaste) {
+                    minWaste = totalScore;
+                    bestLayout = layout;
+                }
+            });
+            
+            cols = bestLayout.cols;
+            rows = bestLayout.rows;
+            
+            // Step 3: 根据行列数动态计算间距
+            gap = Math.max(8, Math.min(20, 30 - cols * 1.5));
+            
+            // Step 4: 计算卡片尺寸（填满屏幕）
+            cardWidth = (containerWidth - gap * (cols - 1)) / cols;
+            cardHeight = (containerHeight - gap * (rows - 1)) / rows;
+            
+            // Step 5: 限制卡片尺寸范围
+            const minCardSize = 80;
+            const maxCardWidth = 250;
+            const maxCardHeight = 220;
+            
+            cardWidth = Math.max(minCardSize, Math.min(maxCardWidth, cardWidth));
+            cardHeight = Math.max(minCardSize, Math.min(maxCardHeight, cardHeight));
+            
+            // Step 6: 根据卡片大小智能调整字号（保证字体尽可能大）
+            const sizeScore = Math.min(cardWidth, cardHeight);
+            
+            if (sizeScore >= 200) {
+                fontSize = 'clamp(1.8rem, 3.5vw, 3rem)';
+                deptSize = 'clamp(0.9rem, 1.5vw, 1.2rem)';
+            } else if (sizeScore >= 160) {
+                fontSize = 'clamp(1.5rem, 3vw, 2.5rem)';
+                deptSize = 'clamp(0.8rem, 1.3vw, 1rem)';
+            } else if (sizeScore >= 130) {
+                fontSize = 'clamp(1.3rem, 2.5vw, 2rem)';
+                deptSize = 'clamp(0.75rem, 1.1vw, 0.9rem)';
+            } else if (sizeScore >= 100) {
+                fontSize = 'clamp(1.1rem, 2vw, 1.8rem)';
+                deptSize = 'clamp(0.7rem, 1vw, 0.85rem)';
             } else {
-                nameSize = 'text-sm';
-                deptSize = 'text-xs';
-                padding = 2;
+                fontSize = 'clamp(0.9rem, 1.8vw, 1.5rem)';
+                deptSize = 'clamp(0.65rem, 0.9vw, 0.75rem)';
             }
             
             return {
-                cols: optimalCols,
-                cardSize: Math.floor(calculatedCardSize),
-                nameSize: nameSize,
+                cols: cols,
+                cardWidth: Math.floor(cardWidth),
+                cardHeight: Math.floor(cardHeight),
+                fontSize: fontSize,
                 deptSize: deptSize,
-                gap: `${gapSize}px`,
-                padding: padding
+                gap: `${gap}px`
             };
         }
 
-        function showWinners(people, prize) {
-            $('rolling-area').classList.add('hidden');
-            $('result-area').classList.remove('hidden');
+        function showWinners(people, prize) {  
+            $('rolling-area').classList.add('hidden');  
+            $('result-area').classList.remove('hidden');  
 
-            const count = people.length;
-            const layout = calculateOptimalLayout(count);
+            const count = people.length;  
+            const layout = calculateOptimalLayout(count);  
             
-            // 使用flex居中Grid容器
-            let html = `
-                <div class="flex items-center justify-center w-full h-full">
-                    <div class="grid place-items-center" style="grid-template-columns: repeat(${layout.cols}, ${layout.cardSize}px); gap: ${layout.gap};">`;
+            // 构建响应式Grid布局
+            let html = `  
+                <div class="flex items-center justify-center w-full h-full overflow-auto p-4">  
+                    <div class="grid place-items-center" style="
+                        grid-template-columns: repeat(${layout.cols}, ${layout.cardWidth}px); 
+                        gap: ${layout.gap};
+                        max-height: 100%;
+                    ">`;  
             
-            people.forEach((person, i) => {
-                html += `
-                <div class="winner-card rounded-2xl p-${layout.padding} relative overflow-hidden flex flex-col justify-center items-center text-center group hover:scale-105 transition-transform duration-300" 
-                     style="width: ${layout.cardSize}px; height: ${layout.cardSize}px; animation-delay: ${i * 0.02}s;">
-                    <div class="absolute top-1 right-2 text-xl opacity-10 group-hover:opacity-30 transition">🎉</div>
+            people.forEach((person, i) => {  
+                html += `  
+                <div class="winner-card rounded-2xl p-3 relative overflow-hidden flex flex-col justify-center items-center text-center group hover:scale-105 transition-transform duration-300"   
+                     style="
+                        width: ${layout.cardWidth}px; 
+                        height: ${layout.cardHeight}px; 
+                        animation-delay: ${i * 0.03}s;
+                     ">  
+                    <div class="absolute top-1 right-2 opacity-10 group-hover:opacity-30 transition" style="font-size: ${layout.cardWidth * 0.12}px;">🎉</div>  
                     
-                    <div class="${layout.nameSize} font-black text-theme-primary mb-2 break-words w-full leading-tight px-1 line-clamp-2">
-                        ${person.name}
-                    </div>
+                    <div class="font-black text-theme-primary mb-2 break-words w-full leading-tight px-2 line-clamp-2" 
+                         style="font-size: ${layout.fontSize};">  
+                        ${person.name}  
+                    </div>  
                     
-                    <div class="w-2/3 mb-1.5" style="border-bottom: 1.5px solid var(--accent-color);"></div>
+                    <div class="mb-1.5" style="
+                        border-bottom: 2px solid var(--accent-color);
+                        width: ${Math.min(layout.cardWidth * 0.6, 120)}px;
+                    "></div>  
                     
-                    ${person.dept ? `
-                        <div class="${layout.deptSize} text-theme-secondary opacity-80 font-medium px-1 line-clamp-1">
-                            ${person.dept}
-                        </div>
-                    ` : `<div class="${layout.deptSize} text-theme-secondary opacity-40">-</div>`}
-                </div>`;
+                    ${person.dept ? `  
+                        <div class="text-theme-secondary opacity-80 font-medium px-2 line-clamp-1 w-full" 
+                             style="font-size: ${layout.deptSize};">  
+                            ${person.dept}  
+                        </div>  
+                    ` : `<div class="text-theme-secondary opacity-40" style="font-size: ${layout.deptSize};">-</div>`}  
+                </div>`;  
             });
             
-            html += `
-                    </div>
-                </div>`;
+            html += `  
+                    </div>  
+                </div>`;  
             
-            $('result-grid').innerHTML = html;
+            $('result-grid').innerHTML = html;  
         }
 
-        function clearScreen() {
-            $('result-area').classList.add('hidden');
-            $('rolling-area').classList.remove('hidden');
-            $('rolling-name').textContent = '准备就绪';
-            $('rolling-dept').textContent = '';
-            $('btn-clear').classList.add('hidden');
-            showAllPanels();
+        function clearScreen() {  
+            $('result-area').classList.add('hidden');  
+            $('rolling-area').classList.remove('hidden');  
+            $('rolling-name').textContent = '准备就绪';  
+            $('rolling-dept').textContent = '';  
+            $('btn-clear').classList.add('hidden');  
+            showAllPanels();  
         }
 
-        function updateHistory() {
-            if (roundHistory.length === 0) {
-                $('history-list').innerHTML = '<div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>';
-                return;
+        function updateHistory() {  
+            if (roundHistory.length === 0) {  
+                $('history-list').innerHTML = '<div class="text-center text-theme-secondary mt-10 lg:mt-20 text-base lg:text-lg opacity-50">暂无中奖记录</div>';  
+                return;  
             }
             
-            const reversed = [...roundHistory].reverse();
-            let html = '';
+            const reversed = [...roundHistory].reverse();  
+            let html = '';  
             
-            reversed.forEach((round, index) => {
-                const roundId = `round-${round.round}`;
-                const isExpanded = index === 0 ? 'expanded' : ''; 
-                const iconClass = index === 0 ? '' : 'collapsed';
+            reversed.forEach((round, index) => {  
+                const roundId = `round-${round.round}`;  
+                const isExpanded = index === 0 ? 'expanded' : '';   
+                const iconClass = index === 0 ? '' : 'collapsed';  
 
-                html += `
-                <div class="bg-black/20 border border-theme rounded-xl shadow mb-2 overflow-hidden" style="animation: slideIn 0.3s ease forwards ${index * 0.05}s">
-                    <div class="flex items-center justify-between p-2 lg:p-3 cursor-pointer hover:bg-white/5 transition" onclick="toggleRound('${roundId}')">
-                        <div class="flex items-center gap-2 overflow-hidden">
-                            <i class="fas fa-chevron-down collapse-icon text-theme-primary text-xs ${iconClass}" id="icon-${roundId}"></i>
-                            <span class="bg-theme-sidebar border border-theme text-theme-primary px-1.5 py-0.5 rounded text-[10px] lg:text-xs whitespace-nowrap">第${round.round}轮</span>
-                            <span class="text-theme-secondary font-bold text-xs lg:text-sm truncate">${round.prize}</span>
-                        </div>
-                        <span class="text-theme-primary font-bold text-xs lg:text-sm">×${round.count}</span>
-                    </div>
+                html += `  
+                <div class="bg-black/20 border border-theme rounded-xl shadow mb-2 overflow-hidden" style="animation: slideIn 0.3s ease forwards ${index * 0.05}s">  
+                    <div class="flex items-center justify-between p-2 lg:p-3 cursor-pointer hover:bg-white/5 transition" onclick="toggleRound('${roundId}')">  
+                        <div class="flex items-center gap-2 overflow-hidden">  
+                            <i class="fas fa-chevron-down collapse-icon text-theme-primary text-xs ${iconClass}" id="icon-${roundId}"></i>  
+                            <span class="bg-theme-sidebar border border-theme text-theme-primary px-1.5 py-0.5 rounded text-[10px] lg:text-xs whitespace-nowrap">第${round.round}轮</span>  
+                            <span class="text-theme-secondary font-bold text-xs lg:text-sm truncate">${round.prize}</span>  
+                        </div>  
+                        <span class="text-theme-primary font-bold text-xs lg:text-sm">×${round.count}</span>  
+                    </div>  
                     
-                    <div class="round-content ${isExpanded}" id="${roundId}">
-                        <div class="round-inner p-2 lg:p-3 pt-0 space-y-1 lg:space-y-2">
-                            <div class="h-px bg-theme opacity-20 mb-1"></div>
-                            ${round.sponsor ? `
-                                <div class="text-center mb-2">
-                                    <span class="text-[10px] bg-purple-600/30 text-purple-200 px-2 py-0.5 rounded-full border border-purple-400/30">
-                                        <i class="fas fa-hand-holding-heart mr-1"></i>${round.sponsor}
-                                    </span>
-                                </div>
-                            ` : ''}
-                            ${round.winners.map((person, i) => `
-                                <div class="flex justify-between items-center text-xs lg:text-sm">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-theme-secondary opacity-50 text-[10px] w-3">${i + 1}.</span>
-                                        <span class="text-theme-primary font-bold">${person.name}</span>
-                                        ${person.dept ? `<span class="text-theme-secondary opacity-60 text-[10px]">(${person.dept})</span>` : ''}
-                                    </div>
-                                    <i class="fas fa-check text-green-500 text-[10px]"></i>
-                                </div>
-                            `).join('')}
-                            <div class="text-right mt-1 text-theme-secondary opacity-40 text-[10px] scale-90 origin-right">
-                                ${round.time}
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
+                    <div class="round-content ${isExpanded}" id="${roundId}">  
+                        <div class="round-inner p-2 lg:p-3 pt-0 space-y-1 lg:space-y-2">  
+                            <div class="h-px bg-theme opacity-20 mb-1"></div>  
+                            ${round.sponsor ? `  
+                                <div class="text-center mb-2">  
+                                    <span class="text-[10px] bg-purple-600/30 text-purple-200 px-2 py-0.5 rounded-full border border-purple-400/30">  
+                                        <i class="fas fa-hand-holding-heart mr-1"></i>${round.sponsor}  
+                                    </span>  
+                                </div>  
+                            ` : ''}  
+                            ${round.winners.map((person, i) => `  
+                                <div class="flex justify-between items-center text-xs lg:text-sm">  
+                                    <div class="flex items-center gap-2">  
+                                        <span class="text-theme-secondary opacity-50 text-[10px] w-3">${i + 1}.</span>  
+                                        <span class="text-theme-primary font-bold">${person.name}</span>  
+                                        ${person.dept ? `<span class="text-theme-secondary opacity-60 text-[10px]">(${person.dept})</span>` : ''}  
+                                    </div>  
+                                    <i class="fas fa-check text-green-500 text-[10px]"></i>  
+                                </div>  
+                            `).join('')}  
+                            <div class="text-right mt-1 text-theme-secondary opacity-40 text-[10px] scale-90 origin-right">  
+                                ${round.time}  
+                            </div>  
+                        </div>  
+                    </div>  
+                </div>`;  
             });
-            $('history-list').innerHTML = html;
+            $('history-list').innerHTML = html;  
         }
 
-        function toggleRound(roundId) {
-            const content = $(roundId);
-            const icon = $('icon-' + roundId);
-            content.classList.toggle('expanded');
-            icon.classList.toggle('collapsed');
+        function toggleRound(roundId) {  
+            const content = $(roundId);  
+            const icon = $('icon-' + roundId);  
+            content.classList.toggle('expanded');  
+            icon.classList.toggle('collapsed');  
         }
 
-        function exportResults() {
-            if (roundHistory.length === 0) return alert('❌ 暂无中奖数据');
+        function exportResults() {  
+            if (roundHistory.length === 0) return alert('❌ 暂无中奖数据');  
             let csv = '\uFEFF轮次,奖品,赞助官,姓名,部门,时间\n';
-            roundHistory.forEach(round => {
-                round.winners.forEach(person => {
-                    csv += `第${round.round}轮,${round.prize},${round.sponsor || '无'},${person.name},${person.dept || ''},${round.time}\n`;
+            roundHistory.forEach(round => {  
+                round.winners.forEach(person => {  
+                    csv += `第${round.round}轮,${round.prize},${round.sponsor || '无'},${person.name},${person.dept || ''},${round.time}\n`;  
                 });
             });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `中奖名单_${Date.now()}.csv`;
-            a.click();
+            const blob = new Blob([csv], { type: 'text/csv' });  
+            const url = URL.createObjectURL(blob);  
+            const a = document.createElement('a');  
+            a.href = url;  
+            a.download = `中奖名单_${Date.now()}.csv`;  
+            a.click();  
         }
 
-        function fireworks() {
-            const colors = [
-                getComputedStyle(document.body).getPropertyValue('--text-primary'),
-                getComputedStyle(document.body).getPropertyValue('--accent-color'),
-                '#ffffff'
+        function fireworks() {  
+            const colors = [  
+                getComputedStyle(document.body).getPropertyValue('--text-primary'),  
+                getComputedStyle(document.body).getPropertyValue('--accent-color'),  
+                '#ffffff'  
             ];
             
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.7;
-                    for (let j = 0; j < 10; j++) {
-                        const particle = document.createElement('div');
-                        particle.className = 'firework';
-                        particle.style.left = x + 'px';
-                        particle.style.top = y + 'px';
-                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                        const angle = (j / 10) * Math.PI * 2;
-                        const distance = 80 + Math.random() * 80;
-                        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-                        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
-                        document.body.appendChild(particle);
-                        setTimeout(() => particle.remove(), 1000);
+            for (let i = 0; i < 30; i++) {  
+                setTimeout(() => {  
+                    const x = Math.random() * window.innerWidth;  
+                    const y = Math.random() * window.innerHeight * 0.7;  
+                    for (let j = 0; j < 10; j++) {  
+                        const particle = document.createElement('div');  
+                        particle.className = 'firework';  
+                        particle.style.left = x + 'px';  
+                        particle.style.top = y + 'px';  
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];  
+                        const angle = (j / 10) * Math.PI * 2;  
+                        const distance = 80 + Math.random() * 80;  
+                        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');  
+                        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');  
+                        document.body.appendChild(particle);  
+                        setTimeout(() => particle.remove(), 1000);  
                     }
-                }, i * 150);
+                }, i * 150);  
             }
         }
 
-        function createCoins() {
-            const coins = ['💰', '🎁', '⭐', '💎', '🏆'];
-            const interval = setInterval(() => {
-                if (!isRolling) { clearInterval(interval); return; }
-                const coin = document.createElement('div');
-                coin.className = 'coin';
-                coin.textContent = coins[Math.floor(Math.random() * coins.length)];
-                coin.style.left = Math.random() * window.innerWidth + 'px';
-                coin.style.animationDuration = (2 + Math.random() * 3) + 's';
-                document.body.appendChild(coin);
-                setTimeout(() => coin.remove(), 5000);
-            }, 100); /* ← 这里改小一点，比如改成 200 或 150 */
+        function createCoins() {  
+            const coins = ['💰', '🎁', '⭐', '💎', '🏆'];  
+            const interval = setInterval(() => {  
+                if (!isRolling) { clearInterval(interval); return; }  
+                const coin = document.createElement('div');  
+                coin.className = 'coin';  
+                coin.textContent = coins[Math.floor(Math.random() * coins.length)];  
+                coin.style.left = Math.random() * window.innerWidth + 'px';  
+                coin.style.animationDuration = (2 + Math.random() * 3) + 's';  
+                document.body.appendChild(coin);  
+                setTimeout(() => coin.remove(), 5000);  
+            }, 150);
         }
 
-        function celebrate() { fireworks(); }
+        function celebrate() { fireworks(); }  
         
-        updatePoolDisplay();
-    </script>
-</body>
+        // 初始化
+        updatePoolDisplay();  
+        
+        // 窗口大小改变时重新计算布局
+        window.addEventListener('resize', () => {
+            if (!$('result-area').classList.contains('hidden')) {
+                const count = parseInt($('display-count').textContent) || 1;
+                // 重新渲染中奖结果以适应新尺寸
+                if (roundHistory.length > 0) {
+                    const lastRound = roundHistory[roundHistory.length - 1];
+                    showWinners(lastRound.winners, lastRound.prize);
+                }
+            }
+        });
+    </script>  
+</body>  
 </html>
-
